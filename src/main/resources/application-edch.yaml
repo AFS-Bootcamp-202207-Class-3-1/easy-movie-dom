@@ -3,4 +3,7 @@ spring:
     url: jdbc:mysql://server.edch.top:3306/easy_movie?useUnicode=true&characterEncoding=utf8
     username: root
     password: qFj4ogncWUP64xxhpnlE
-
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
