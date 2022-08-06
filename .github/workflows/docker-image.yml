@@ -37,7 +37,8 @@ jobs:
           sha="${{ github.event.pull_request.head.sha }}"
           commit=${sha: 0: 7}
           repo_user="${{ secrets.DOCKER_REPOSITORY_USER }}"
-          docker login --username=$repo_user -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com
+          repo_password="${{ secrets.DOCKER_REPOSITORY_PASSWORD }}"
+          docker login --username=$repo_user -p $repo_password registry.cn-shenzhen.aliyuncs.com
           docker tag easy-movie-dom:$commit registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom:$commit
           docker push registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom:$commit
       - name: Deploy On My Sever
@@ -52,6 +53,6 @@ jobs:
             repo_user="${{ secrets.DOCKER_REPOSITORY_USER }}"
             cd /home/${{ secrets.DEPLOY_USER }}/easy-movie/dom
             docker-compose down
-            docker login --username=$repo_user -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com >/dev/null 2>&1
+            docker login --username=$repo_user -p $repo_password registry.cn-shenzhen.aliyuncs.com >/dev/null 2>&1
             docker pull registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom:$commit
             COMMIT=$commit docker-compose up -d
