@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: edch
   jpa:
     hibernate:
       ddl-auto: update
