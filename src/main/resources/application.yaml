@@ -8,9 +8,3 @@ spring:
     show-sql: true
   profiles:
     active: edch
-server:
-  servlet:
-    context-path: /api
-springdoc:
-  swagger-ui:
-    enabled: true
