@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @author edward
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserMapper userMapper;
