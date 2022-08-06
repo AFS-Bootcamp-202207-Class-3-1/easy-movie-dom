@@ -36,9 +36,10 @@ jobs:
         run: |
           sha="${{ github.event.pull_request.head.sha }}"
           commit=${sha: 0: 7}
-          docker login --username=xinze517 -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com
-          docker tag easy-movie-dom:$commit registry.cn-shenzhen.aliyuncs.com/xinze517/easy-movie-dom:$commit
-          docker push registry.cn-shenzhen.aliyuncs.com/xinze517/easy-movie-dom:$commit
+          repo_user="${{ secrets.DOCKER_REPOSITORY_USER }}"
+          docker login --username=$repo_user -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com
+          docker tag easy-movie-dom:$commit registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom:$commit
+          docker push registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom:$commit
       - name: Deploy On My Sever
         uses: appleboy/ssh-action@master
         with:
@@ -48,8 +49,9 @@ jobs:
           script: |
             sha="${{ github.event.pull_request.head.sha }}"
             commit=${sha: 0: 7}
+            repo_user="${{ secrets.DOCKER_REPOSITORY_USER }}"
             cd /home/${{ secrets.DEPLOY_USER }}/easy-movie/dom
             docker-compose down
-            docker login --username=xinze517 -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com >/dev/null 2>&1
-            docker pull registry.cn-shenzhen.aliyuncs.com/xinze517/easy-movie-dom:$commit
+            docker login --username=$repo_user -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com >/dev/null 2>&1
+            docker pull registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom:$commit
             COMMIT=$commit docker-compose up -d
