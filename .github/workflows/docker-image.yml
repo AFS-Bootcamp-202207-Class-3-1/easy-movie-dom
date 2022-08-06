@@ -1,0 +1,43 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Docker Image
+        run: |
+          sha="${{github.sha}}"
+          commit=${sha: 0: 7}
+          docker build . --file Dockerfile --tag easy-movie-dom:$commit
+      - name: Push To Ali Cloud
+        run: |
+          sha="${{github.sha}}"
+          commit=${sha: 0: 7}
+          docker login --username=xinze517 -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com
+          docker tag easy-movie-dom:$commit registry.cn-shenzhen.aliyuncs.com/xinze517/easy-movie-dom:$commit
+          docker push registry.cn-shenzhen.aliyuncs.com/xinze517/easy-movie-dom:$commit
+      - name: Deploy On My Sever
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SECRET }}
+          script: |
+            sha="${{github.sha}}"
+            commit=${sha: 0: 7}
+            cd /home/${{ secrets.DEPLOY_USER }}/easy-movie/dom
+            docker-compose down
+            docker login --username=xinze517 -p bPVj1TLvBR2CLYI5uE0n registry.cn-shenzhen.aliyuncs.com >/dev/null 2>&1
+            docker pull registry.cn-shenzhen.aliyuncs.com/xinze517/easy-movie-dom:$commit
+            COMMIT=$commit docker-compose up -d
+
