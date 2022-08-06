@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse create(UserRequest request) {
+    public UserResponse create(@RequestBody UserRequest request) {
         final User user = userMapper.toEntity(request);
         userService.save(user);
         return userMapper.toResponse(user);
