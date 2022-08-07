@@ -5,6 +5,7 @@ import com.oocl.easymovie.dto.UserResponse;
 import com.oocl.easymovie.entity.User;
 import com.oocl.easymovie.mapper.UserMapper;
 import com.oocl.easymovie.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -12,15 +13,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserMapper userMapper;
     private final UserService userService;
-
-    public UserController(UserMapper userMapper, UserService userService) {
-        this.userMapper = userMapper;
-        this.userService = userService;
-    }
 
     @PostMapping
     public UserResponse create(@RequestBody UserRequest request) {
