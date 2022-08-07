@@ -52,7 +52,7 @@ jobs:
             sha="${{ github.event.pull_request.head.sha }}"
             commit=${sha: 0: 7}
             repo_user="${{ secrets.DOCKER_REPOSITORY_USER }}"
-            cd /home/${{ secrets.DEPLOY_USER }}/easy-movie/dom
+            cd /home/${{ secrets.DEPLOY_USER }}/easy-movie-dev/dom
             docker-compose down
             docker login --username=$repo_user -p $repo_password registry.cn-shenzhen.aliyuncs.com >/dev/null 2>&1
             docker pull registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom-dev:$commit
