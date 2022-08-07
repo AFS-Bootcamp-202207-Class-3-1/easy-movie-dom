@@ -31,7 +31,7 @@ jobs:
         run: |
           sha="${{ github.event.pull_request.head.sha }}"
           commit=${sha: 0: 7}
-          docker build . --file Dockerfile --tag easy-movie-dom:$commit
+          docker build . --file Dockerfile-prod --tag easy-movie-dom:$commit
 
       - name: Push To Ali Cloud
         run: |
