@@ -1,6 +1,5 @@
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:}
-    hikari:
-      connection-timeout: 30000
-      maximum-pool-size: 10
+    url: jdbc:mysql://server.edch.top:3306/easy_movie?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: qFj4ogncWUP64xxhpnlE

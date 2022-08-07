@@ -1,9 +1,12 @@
 spring:
   profiles:
-    active: edch
+    active: dev
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
 server:
   port: ${PORT:8080}
