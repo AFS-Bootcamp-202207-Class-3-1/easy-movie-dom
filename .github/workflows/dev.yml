@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI - Development
 
 on:
   push:
@@ -33,6 +33,7 @@ jobs:
           sha="${{github.sha}}"
           commit=${sha: 0: 7}
           docker build . --file Dockerfile --tag easy-movie-dom-dev:$commit
+
       - name: Push To Ali Cloud
         run: |
           sha="${{github.sha}}"
@@ -42,6 +43,7 @@ jobs:
           docker login --username=$repo_user -p $repo_password registry.cn-shenzhen.aliyuncs.com
           docker tag easy-movie-dom-dev:$commit registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom-dev:$commit
           docker push registry.cn-shenzhen.aliyuncs.com/$repo_user/easy-movie-dom-dev:$commit
+
       - name: Deploy On My Sever
         uses: appleboy/ssh-action@master
         with:
