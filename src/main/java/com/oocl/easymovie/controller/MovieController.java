@@ -8,10 +8,7 @@ import com.oocl.easymovie.mapper.MovieMapper;
 import com.oocl.easymovie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,8 +30,8 @@ public class MovieController {
         return ResultData.success(movieService.findNextMovie());
     }
 
-    @GetMapping("/{keyword}/{page}/{pageSize}")
-    public ResultData<Page<Movie>> findMovieByKeywordAndPage(@PathVariable String keyword, @PathVariable int page, @PathVariable int pageSize) {
+    @GetMapping(params = {"keyword","page","pageSize"})
+    public ResultData<Page<Movie>> findMovieByKeywordAndPage(@RequestParam(required = false,name = "keyword") String keyword, @RequestParam(value = "page") Integer page, @RequestParam(value = "pageSize") Integer pageSize) {
         return ResultData.success(movieService.findMovieByKeywordAndPage(keyword, page, pageSize));
     }
 
