@@ -3,3 +3,5 @@ spring:
     url: jdbc:mysql://server.edch.top:13306/easy_movie?useUnicode=true&characterEncoding=utf8
     username: root
     password: qFj4ogncWUP64xxhpnlE
+server:
+  port: 8080
