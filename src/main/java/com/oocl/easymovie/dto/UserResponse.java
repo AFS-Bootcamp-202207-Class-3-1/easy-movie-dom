@@ -1,35 +1,28 @@
 package com.oocl.easymovie.dto;
 
+import lombok.*;
+
+import java.util.Date;
+
 /**
  * @author edward
  */
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class UserResponse {
 
-    private Integer id;
-
+    private Long id;
     private String username;
+    private String phoneNumber;
+    private String email;
+    private String gender;
+    private Date birthday;
+    private String avatar;
+    private Date createTime;
+    private Date updateTime;
 
-    public UserResponse(Integer id, String username) {
-        this.id = id;
-        this.username = username;
-    }
-
-    public UserResponse() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }
