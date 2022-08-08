@@ -19,7 +19,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findById(Integer id) {
+    public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
     }
