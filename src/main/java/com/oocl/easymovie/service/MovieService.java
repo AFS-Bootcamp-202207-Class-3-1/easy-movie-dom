@@ -12,8 +12,13 @@ import java.util.List;
 public class MovieService {
 
     public static final int RELEASE_STATUS_HOT = 1;
+    public static final int RELEASE_STATUS_NEXT = 0;
     private final MovieRepository movieRepository;
     public List<Movie> findHotMovie() {
         return movieRepository.findTop10ByReleaseStatus(RELEASE_STATUS_HOT);
+    }
+
+    public List<Movie> findNextMovie() {
+        return movieRepository.findTop10ByReleaseStatus(RELEASE_STATUS_NEXT);
     }
 }

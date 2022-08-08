@@ -22,4 +22,9 @@ public class MovieController {
         return ResultData.success(movieService.findHotMovie());
     }
 
+    @GetMapping("/next")
+    public ResultData<List<Movie>> findNextMovie() {
+        return ResultData.success(movieService.findNextMovie());
+    }
+
 }
