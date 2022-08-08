@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ActorMovieRelationRepository extends JpaRepository<ActorMovieRelation, Long> {
-    @Query(value = "select actor_id from theater_movie_relation where movie_id=?1", nativeQuery = true)
+    @Query(value = "select actor_id from actor_movie_relation where movie_id=?1", nativeQuery = true)
     List<Long> findAllByActorId(Long theaterId);
 }

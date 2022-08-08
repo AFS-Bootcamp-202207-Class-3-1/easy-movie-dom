@@ -2,10 +2,11 @@ package com.oocl.easymovie.controller;
 
 import com.oocl.easymovie.dto.MovieContainCastResponse;
 import com.oocl.easymovie.dto.ResultData;
+import com.oocl.easymovie.entity.Figure;
 import com.oocl.easymovie.entity.Movie;
 import com.oocl.easymovie.mapper.MovieMapper;
 import com.oocl.easymovie.service.MovieService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
-@RequiredArgsConstructor
 public class MovieController {
-
-    private final MovieService movieService;
-    private final MovieMapper movieMapper;
+    @Autowired
+    private MovieService movieService;
+    @Autowired
+    private MovieMapper movieMapper;
 
     @GetMapping("/hot")
     public ResultData<List<Movie>> findHotMovie() {
@@ -40,8 +41,8 @@ public class MovieController {
     @GetMapping("/{movieId}")
     public ResultData<MovieContainCastResponse> findMovieContainCastById(@PathVariable Long movieId) {
         Movie movie = movieService.findById(movieId);
-        List<Character> directorList = movieService.findDirectorByMovieId(movieId);
-        List<Character> actorList = movieService.findActorByMovieId(movieId);
+        List<Figure> directorList = movieService.findDirectorByMovieId(movieId);
+        List<Figure> actorList = movieService.findActorByMovieId(movieId);
         return ResultData.success(movieMapper.toResponse(movie, directorList, actorList));
     }
 

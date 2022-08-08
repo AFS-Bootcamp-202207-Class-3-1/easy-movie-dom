@@ -16,7 +16,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Character {
+public class Figure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

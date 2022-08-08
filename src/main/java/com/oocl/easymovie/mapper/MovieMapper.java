@@ -1,9 +1,8 @@
 package com.oocl.easymovie.mapper;
 
 import com.oocl.easymovie.dto.MovieContainCastResponse;
-import com.oocl.easymovie.dto.TheaterContainMovieResponse;
+import com.oocl.easymovie.entity.Figure;
 import com.oocl.easymovie.entity.Movie;
-import com.oocl.easymovie.entity.Theater;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 @Component
 public class MovieMapper {
 
-    public MovieContainCastResponse toResponse(Movie movie, List<Character> directorList, List<Character> actorList) {
+    public MovieContainCastResponse toResponse(Movie movie, List<Figure> directorList, List<Figure> actorList) {
         MovieContainCastResponse response = new MovieContainCastResponse();
         response.setMovie(movie);
         response.setDirectorList(directorList);

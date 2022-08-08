@@ -1,5 +1,6 @@
 package com.oocl.easymovie.dto;
 
+import com.oocl.easymovie.entity.Figure;
 import com.oocl.easymovie.entity.Movie;
 import lombok.*;
 
@@ -14,6 +15,6 @@ import java.util.List;
 @EqualsAndHashCode
 public class MovieContainCastResponse {
     private Movie movie;
-    List<Character> directorList;
-    List<Character> actorList;
+    List<Figure> directorList;
+    List<Figure> actorList;
 }

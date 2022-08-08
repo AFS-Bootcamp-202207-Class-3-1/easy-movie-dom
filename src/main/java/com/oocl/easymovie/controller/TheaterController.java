@@ -7,19 +7,23 @@ import com.oocl.easymovie.entity.Theater;
 import com.oocl.easymovie.mapper.TheaterMapper;
 import com.oocl.easymovie.service.MovieService;
 import com.oocl.easymovie.service.TheaterService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/theater")
-@RequiredArgsConstructor
 public class TheaterController {
 
     private final TheaterService theaterService;
     private final MovieService movieService;
     private final TheaterMapper theaterMapper;
+
+    public TheaterController(TheaterService theaterService, MovieService movieService, TheaterMapper theaterMapper) {
+        this.theaterService = theaterService;
+        this.movieService = movieService;
+        this.theaterMapper = theaterMapper;
+    }
 
 
     @GetMapping("/{theaterId}")
