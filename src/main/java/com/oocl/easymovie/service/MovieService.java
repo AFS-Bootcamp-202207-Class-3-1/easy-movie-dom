@@ -43,7 +43,7 @@ public class MovieService {
         if (keyword != null && keyword.length() != 0) {
             return movieRepository.findByNameContaining(keyword, PageRequest.of(page-1, pageSize));
         }
-        return movieRepository.findAll(PageRequest.of(page, pageSize));
+        return movieRepository.findAll(PageRequest.of(page-1, pageSize));
     }
 
     public List<Movie> findMovieByTheaterId(Long theaterId) {
