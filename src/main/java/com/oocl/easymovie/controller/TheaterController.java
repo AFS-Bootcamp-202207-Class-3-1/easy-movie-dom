@@ -6,7 +6,6 @@ import com.oocl.easymovie.entity.Movie;
 import com.oocl.easymovie.entity.Theater;
 import com.oocl.easymovie.mapper.TheaterMapper;
 import com.oocl.easymovie.service.MovieService;
-import com.oocl.easymovie.service.TheaterMovieRelationService;
 import com.oocl.easymovie.service.TheaterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

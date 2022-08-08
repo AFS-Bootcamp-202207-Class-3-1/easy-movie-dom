@@ -9,8 +9,6 @@ import java.util.List;
 
 @Component
 public class TheaterMapper {
-
-
     public TheaterContainMovieResponse toResponse(Theater theater, List<Movie> movieList) {
         TheaterContainMovieResponse response = new TheaterContainMovieResponse();
         response.setTheater(theater);
