@@ -3,6 +3,8 @@ package com.oocl.easymovie.service;
 import com.oocl.easymovie.entity.Movie;
 import com.oocl.easymovie.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,5 +22,12 @@ public class MovieService {
 
     public List<Movie> findNextMovie() {
         return movieRepository.findTop10ByReleaseStatus(RELEASE_STATUS_NEXT);
+    }
+
+    public Page<Movie> findMovieByKeywordAndPage(String keyword, int page, int pageSize) {
+        if (keyword!=null && keyword.length()!=0){
+            return movieRepository.findAllByNameLike("%"+keyword+"%",PageRequest.of(page,pageSize));
+        }
+        return movieRepository.findAll(PageRequest.of(page,pageSize));
     }
 }
