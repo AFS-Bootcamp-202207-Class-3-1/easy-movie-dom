@@ -11,4 +11,7 @@ import java.util.List;
 public interface TheaterMovieRelationRepository extends JpaRepository<TheaterMovieRelation, Long> {
     @Query(value = "select movie_id from theater_movie_relation where theater_id=?1", nativeQuery = true)
     List<Long> findAllByTheaterId(Long theaterId);
+
+    @Query(value = "select theater_id from theater_movie_relation where movie_id=?1", nativeQuery = true)
+    List<Long> findAllByMovieId(Long movieId);
 }

@@ -32,4 +32,9 @@ public class TheaterController {
         List<Movie> movieList = movieService.findMovieByTheaterId(theaterId);
         return ResultData.success(theaterMapper.toResponse(theater, movieList));
     }
+
+    @GetMapping("/movie/{movieId}")
+    ResultData<List<Theater>> findTheaterByMovieId(@PathVariable Long movieId) {
+        return ResultData.success(theaterService.findTheaterByMovieId(movieId));
+    }
 }
