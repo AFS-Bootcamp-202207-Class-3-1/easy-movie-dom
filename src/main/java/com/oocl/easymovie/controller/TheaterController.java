@@ -7,6 +7,7 @@ import com.oocl.easymovie.entity.Theater;
 import com.oocl.easymovie.mapper.TheaterMapper;
 import com.oocl.easymovie.service.MovieService;
 import com.oocl.easymovie.service.TheaterService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,5 +37,10 @@ public class TheaterController {
     @GetMapping("/movie/{movieId}")
     ResultData<List<Theater>> findTheaterByMovieId(@PathVariable Long movieId) {
         return ResultData.success(theaterService.findTheaterByMovieId(movieId));
+    }
+    @GetMapping(params = {"page","pageSize"})
+    ResultData<Page<Theater>> findTheaterByPage(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize){
+        return ResultData.success(theaterService.findTheaterByPage(page,pageSize));
+
     }
 }
