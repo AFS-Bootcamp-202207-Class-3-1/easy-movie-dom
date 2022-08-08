@@ -1,0 +1,19 @@
+package com.oocl.easymovie.service;
+
+import com.oocl.easymovie.entity.Movie;
+import com.oocl.easymovie.repository.MovieRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class MovieService {
+
+    public static final int RELEASE_STATUS_HOT = 1;
+    private final MovieRepository movieRepository;
+    public List<Movie> findHotMovie() {
+        return movieRepository.findTop10ByReleaseStatus(RELEASE_STATUS_HOT);
+    }
+}
