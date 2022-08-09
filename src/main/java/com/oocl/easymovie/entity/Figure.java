@@ -10,26 +10,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
-/**
- * @author edward
- */
 @Entity
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
-
+public class Figure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long movieId;
-    private Long userId;
-    private String content;
-    private Integer like;
-    private Double score;
-
+    private String name;
+    private String imgUrl;
     @CreationTimestamp
     private Date createTime;
     @UpdateTimestamp

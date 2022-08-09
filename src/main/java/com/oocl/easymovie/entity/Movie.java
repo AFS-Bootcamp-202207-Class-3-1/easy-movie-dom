@@ -25,6 +25,7 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String englishName;
     private String types;
     private String releaseCountry;
     private Date releaseDate;
