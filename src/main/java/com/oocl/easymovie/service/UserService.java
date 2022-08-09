@@ -6,6 +6,8 @@ import com.oocl.easymovie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author edward
  */
@@ -28,11 +30,15 @@ public class UserService {
     }
 
     public User update(Long id, User userRequest) {
-        boolean exists = userRepository.existsById(id);
-        if (!exists) {
-            throw new UserNotFoundException();
+        User user = findById(id);
+        if (userRequest.getBirthday() != null) {
+            user.setBirthday(userRequest.getBirthday());
+        }
+        if (userRequest.getGender() != null) {
+            user.setGender(userRequest.getGender());
         }
         userRequest.setId(id);
-        return userRepository.save(userRequest);
+
+        return userRepository.save(user);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * @author edward
  */
-@Entity
+@Entity(name = "[user]")
 @Getter
 @Setter
 @ToString

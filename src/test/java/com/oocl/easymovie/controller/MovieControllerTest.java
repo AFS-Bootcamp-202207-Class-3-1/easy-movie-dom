@@ -22,7 +22,7 @@ class MovieControllerTest {
         //given
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/ping"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/{id}",1))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         //then
     }
