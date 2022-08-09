@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface DirectorMovieRelationRepository extends JpaRepository<DirectorMovieRelation, Long> {
     @Query(value = "select director_id from director_movie_relation where movie_id=?1", nativeQuery = true)
-    List<Long> findAllByDirectorIdId(Long theaterId);
+    List<Long> findDirectorIdByMovieId(Long movieId);
 }

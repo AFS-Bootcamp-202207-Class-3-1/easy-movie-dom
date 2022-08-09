@@ -15,9 +15,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     List<Movie> findTop10ByReleaseStatus(int releaseStatus);
 
-    /*@Query(value = "select m from movie m where m.name like ?1 limit ?2,?3",nativeQuery = true)
-    Page<Movie> findAllByNameLike(String keyword, int size,int pageSize);*/
-
     Page<Movie> findByNameContaining(String name, Pageable pageable);
 
 }

@@ -4,8 +4,6 @@ import com.oocl.easymovie.entity.Figure;
 import com.oocl.easymovie.entity.Movie;
 import com.oocl.easymovie.exception.MovieNotFoundException;
 import com.oocl.easymovie.repository.*;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -41,9 +39,9 @@ public class MovieService {
 
     public Page<Movie> findMovieByKeywordAndPage(String keyword, int page, int pageSize) {
         if (keyword != null && keyword.length() != 0) {
-            return movieRepository.findByNameContaining(keyword, PageRequest.of(page-1, pageSize));
+            return movieRepository.findByNameContaining(keyword, PageRequest.of(page - 1, pageSize));
         }
-        return movieRepository.findAll(PageRequest.of(page-1, pageSize));
+        return movieRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 
     public List<Movie> findMovieByTheaterId(Long theaterId) {
@@ -56,12 +54,12 @@ public class MovieService {
     }
 
     public List<Figure> findActorByMovieId(Long movieId) {
-        List<Long> actorIdList = actorMovieRelationRepository.findAllByActorId(movieId);
+        List<Long> actorIdList = actorMovieRelationRepository.findActorIdByMovieId(movieId);
         return characterRepository.findAllById(actorIdList);
     }
 
     public List<Figure> findDirectorByMovieId(Long movieId) {
-        List<Long> directorIdList = directorMovieRelationRepository.findAllByDirectorIdId(movieId);
+        List<Long> directorIdList = directorMovieRelationRepository.findDirectorIdByMovieId(movieId);
         return characterRepository.findAllById(directorIdList);
     }
 }
