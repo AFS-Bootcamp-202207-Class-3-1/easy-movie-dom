@@ -9,11 +9,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class MovieControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -23,9 +22,8 @@ class MovieControllerTest {
         //given
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/{id}", 1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("Coffee Studio"));
-
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/ping"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
         //then
     }
 

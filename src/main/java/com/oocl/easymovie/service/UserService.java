@@ -1,7 +1,5 @@
 package com.oocl.easymovie.service;
 
-import com.oocl.easymovie.dto.UserRequest;
-import com.oocl.easymovie.dto.UserResponse;
 import com.oocl.easymovie.entity.User;
 import com.oocl.easymovie.exception.UserNotFoundException;
 import com.oocl.easymovie.repository.UserRepository;
