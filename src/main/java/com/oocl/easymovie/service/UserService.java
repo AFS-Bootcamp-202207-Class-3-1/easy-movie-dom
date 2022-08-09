@@ -1,5 +1,7 @@
 package com.oocl.easymovie.service;
 
+import com.oocl.easymovie.dto.UserRequest;
+import com.oocl.easymovie.dto.UserResponse;
 import com.oocl.easymovie.entity.User;
 import com.oocl.easymovie.exception.UserNotFoundException;
 import com.oocl.easymovie.repository.UserRepository;
@@ -15,12 +17,24 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        if (user == null) {
+            return null;
+        }
+        return userRepository.save(user);
     }
 
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    public User update(Long id, User userRequest) {
+        boolean exists = userRepository.existsById(id);
+        if (!exists) {
+            throw new UserNotFoundException();
+        }
+        userRequest.setId(id);
+        return userRepository.save(userRequest);
     }
 }
