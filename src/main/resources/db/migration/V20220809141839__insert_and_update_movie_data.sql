@@ -30,6 +30,5 @@ UPDATE movie SET box_office = '401万', create_time = '2022-08-08 15:18:41', des
 UPDATE movie SET box_office = '暂无', create_time = '2022-08-08 15:18:41', description = '暂无剧情简介', duration = 15, hot = 80, image_url = 'https://p0.pipi.cn/mmdb/d2dad5925372fff0ee71f70417bf676e3e713.jpg?imageView2/1/w/464/h/644', name = '喜羊羊与灰太狼', release_country = '中国', release_date = '2005-08-08 15:20:21', release_status = 1, score = 5, types = '电视剧 喜剧 动画', update_time = '2022-08-08 15:21:10', english_name = 'XYYYHTL' WHERE id = 30;
 
 
-INSERT INTO user (id, avatar, birthday, create_time, email, gender, phone_number, update_time, username) VALUES (1, 'https://p0.pipi.cn/mmdb/25bfd6d706d51b7a3567cbc55ff22a4b2686e.jpg?imageView2/1/w/464/h/644', '2002-08-09 15:57:29', '2022-08-09 15:57:33', '1110@00cl.com', '男', '110', '2022-08-09 15:57:51', 'Carlos');
 
 

@@ -88,17 +88,3 @@ create table if not exists `theater_movie_relation`
     `movie_id`   bigint null,
     `theater_id` bigint null
 );
-
-create table if not exists `user`
-(
-    `id`           bigint auto_increment
-        primary key,
-    `avatar`       varchar(255) null,
-    `birthday`     datetime(6)  null,
-    `create_time`  datetime(6)  null,
-    `email`        varchar(255) null,
-    `gender`       varchar(255) null,
-    `phone_number` varchar(255) null,
-    `update_time`  datetime(6)  null,
-    `username`     varchar(255) null
-);
