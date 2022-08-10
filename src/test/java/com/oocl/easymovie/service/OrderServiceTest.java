@@ -3,7 +3,6 @@ package com.oocl.easymovie.service;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
 import com.oocl.easymovie.entity.Seating;
-import com.oocl.easymovie.entity.User;
 import com.oocl.easymovie.repository.OrderRepository;
 import com.oocl.easymovie.repository.SeatingRepository;
 import org.junit.jupiter.api.Test;
@@ -11,14 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
