@@ -26,6 +26,7 @@ public class Schedule {
     private Long id;
     private Long movieId;
     private Long theaterId;
+    private Long seatingId;
     private Date startTime;
     private Date endTime;
     private Double price;

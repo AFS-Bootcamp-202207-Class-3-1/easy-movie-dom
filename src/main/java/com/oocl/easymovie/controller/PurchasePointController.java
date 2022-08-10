@@ -1,5 +1,6 @@
 package com.oocl.easymovie.controller;
 
+import com.oocl.easymovie.dto.CodeRequest;
 import com.oocl.easymovie.dto.PurchasePointResponse;
 import com.oocl.easymovie.dto.ResultData;
 import com.oocl.easymovie.mapper.PurchasePointMapper;
@@ -26,7 +27,7 @@ public class PurchasePointController {
     }
 
     @PutMapping("/{id}")
-    ResultData<PurchasePointResponse> rechargeByUserId(@PathVariable Long id, @RequestBody String code) {
-        return ResultData.success(purchasePointMapper.toResponse(purchasePointService.rechargeByUserId(id, code)));
+    ResultData<PurchasePointResponse> rechargeByUserId(@PathVariable Long id, @RequestBody CodeRequest codeRequest) {
+        return ResultData.success(purchasePointMapper.toResponse(purchasePointService.rechargeByUserId(id, codeRequest.getCode())));
     }
 }
