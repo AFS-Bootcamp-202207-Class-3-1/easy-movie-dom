@@ -20,7 +20,7 @@ public class Seating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long remainIngSeats;
+    private Long remainingSeats;
     private Long totalSeat;
     private String seats;
     @CreationTimestamp
