@@ -1,7 +1,5 @@
 package com.oocl.easymovie.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
 import com.oocl.easymovie.entity.Seating;
@@ -88,19 +86,22 @@ public class OrderService {
 
     public void modifySeatsAndPrice(Long orderId, Seating seating) {
         //这就要求插入数据的时候要插入每个场次的座位内容
-//        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
-//        Seating
-//        int count = statisticsSeatedNumber(seating.getSeats());//统计买了几个座位
-//        Schedule schedule = scheduleService.findById(order.getScheduleId());
-//        double totalPrice = schedule.getPrice() * count;
-//        order.setTotalPrice(totalPrice);
-//
-//        String seatingWithOrder = order.getSeats();
-//        order.setSeats(seating.getSeats());
-//        String seatedStatus = mergeSeatStatus(seatingWithOrder, seating.getSeats());
-//
-//        orderRepository.save(order);
-//        seatingRepository.save(seatingWithOrder);
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        Schedule schedule = scheduleService.findById(order.getScheduleId());
+        Seating readySeating = seatingService.findSeatingById(schedule.getSeatingId());
+        //更新订单的总额
+        int count = statisticsSeatedNumber(seating.getSeats());//统计买了几个座位
+        double totalPrice = schedule.getPrice() * count;
+        order.setTotalPrice(totalPrice);
+//        更新总座位的座位信息
+        String seatingWithOrder = order.getSeats();
+        String seatedStatus = mergeSeatStatus(seatingWithOrder, seating.getSeats());
+        readySeating.setSeats(seatedStatus);
+        seatingRepository.save(readySeating);
+        //更新订单上的座位信息
+        order.setSeats(seating.getSeats());
+        orderRepository.save(order);
+
     }
 
     public int statisticsSeatedNumber(String seated) {
