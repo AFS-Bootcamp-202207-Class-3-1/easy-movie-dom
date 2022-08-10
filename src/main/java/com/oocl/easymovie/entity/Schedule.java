@@ -29,6 +29,7 @@ public class Schedule {
     private Date startTime;
     private Date endTime;
     private Double price;
+    private String screenText;
     @CreationTimestamp
     private Date createTime;
     @UpdateTimestamp
