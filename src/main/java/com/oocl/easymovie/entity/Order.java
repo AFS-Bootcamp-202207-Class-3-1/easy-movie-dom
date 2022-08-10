@@ -34,7 +34,7 @@ public class Order {
     private Boolean isRebook;
     private Boolean isRefund;
     private Date expirationTime;
-    private Long seatingId;
+    private String seats;
     @CreationTimestamp
     private Date createTime;
     @UpdateTimestamp

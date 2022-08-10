@@ -88,16 +88,19 @@ public class OrderService {
 
     public void modifySeatsAndPrice(Long orderId, Seating seating) {
         //这就要求插入数据的时候要插入每个场次的座位内容
-        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
-        int count = statisticsSeatedNumber(seating.getSeats());//统计买了几个座位
-        Schedule schedule = scheduleService.findById(order.getScheduleId());
-        double totalPrice = schedule.getPrice() * count;
-        order.setTotalPrice(totalPrice);
-        orderRepository.save(order);
-        Seating seatingWithOrder = seatingService.findSeatingById(order.getSeatingId());
-        String seatedStatus = mergeSeatStatus(seatingWithOrder.getSeats(), seating.getSeats());
-        seatingWithOrder.setSeats(seatedStatus);
-        seatingRepository.save(seatingWithOrder);
+//        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+//        Seating
+//        int count = statisticsSeatedNumber(seating.getSeats());//统计买了几个座位
+//        Schedule schedule = scheduleService.findById(order.getScheduleId());
+//        double totalPrice = schedule.getPrice() * count;
+//        order.setTotalPrice(totalPrice);
+//
+//        String seatingWithOrder = order.getSeats();
+//        order.setSeats(seating.getSeats());
+//        String seatedStatus = mergeSeatStatus(seatingWithOrder, seating.getSeats());
+//
+//        orderRepository.save(order);
+//        seatingRepository.save(seatingWithOrder);
     }
 
     public int statisticsSeatedNumber(String seated) {
