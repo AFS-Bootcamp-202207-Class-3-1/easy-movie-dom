@@ -19,7 +19,7 @@ public class OrderResponse {
     private Boolean isTicketUsed;
     private Integer votes;
     private double snacksTotalPrice;
-    private String QuickMarKey;
+    private String quickMarkKey;
     private Long snacksId;
     private double totalPrice;
     private Boolean isPaid;

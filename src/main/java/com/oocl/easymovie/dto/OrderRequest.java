@@ -25,4 +25,5 @@ public class OrderRequest {
     private Boolean isRebook;
     private Boolean isRefund;
     private Date expirationTime;
+    private String quickMarkKey;
 }

@@ -19,28 +19,30 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public Order findOrderById(Long id){
+    public Order findOrderById(Long id) {
         return orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
     }
 
-    public Order createOrder(Order order){
+    public Order createOrder(Order order) {
         return orderRepository.save(order);
     }
 
-    public Order updateOrder(Long id,Order newOrder){
+    public Order updateOrder(Long id, Order newOrder) {
         Order oldOrder = orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
-
-        if(!Objects.isNull(oldOrder.getScheduleId())){
-            oldOrder.setScheduleId(oldOrder.getScheduleId());
+        if (!Objects.isNull(newOrder.getQuickMarkKey())) {
+            oldOrder.setQuickMarkKey(newOrder.getQuickMarkKey());
         }
-        if(!Objects.isNull(oldOrder.getSnacksId())){
-            oldOrder.setSnacksId(oldOrder.getSnacksId());
+        if (!Objects.isNull(newOrder.getScheduleId())) {
+            oldOrder.setScheduleId(newOrder.getScheduleId());
         }
-        if(!Objects.isNull(oldOrder.getExpirationTime())){
-            oldOrder.setExpirationTime(oldOrder.getExpirationTime());
+        if (!Objects.isNull(newOrder.getSnacksId())) {
+            oldOrder.setSnacksId(newOrder.getSnacksId());
         }
-        oldOrder.setSnacksTotalPrice(oldOrder.getSnacksTotalPrice());
-        oldOrder.setTotalPrice(oldOrder.getTotalPrice());
+        if (!Objects.isNull(newOrder.getExpirationTime())) {
+            oldOrder.setExpirationTime(newOrder.getExpirationTime());
+        }
+        oldOrder.setSnacksTotalPrice(newOrder.getSnacksTotalPrice());
+        oldOrder.setTotalPrice(newOrder.getTotalPrice());
         return orderRepository.save(oldOrder);
     }
 

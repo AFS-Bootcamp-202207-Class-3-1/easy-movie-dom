@@ -26,7 +26,7 @@ public class Order {
     private Long scheduleId;
     private Boolean isTicketUsed;
     private Integer votes;
-    private String QuickMarKey;
+    private String quickMarkKey;
     private double snacksTotalPrice;
     private Long snacksId;
     private double totalPrice;
