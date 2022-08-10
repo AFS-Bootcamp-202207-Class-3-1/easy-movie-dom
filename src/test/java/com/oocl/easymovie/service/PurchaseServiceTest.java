@@ -71,7 +71,7 @@ public class PurchaseServiceTest {
     }
 
     @Test
-    void should_deduct_balance_failed_when_deduct_balance_given_userId_and_price_more_than_balance() {
+    void should_throw_exception_failed_when_deduct_balance_given_userId_and_price_more_than_balance() {
         //given
         User user = new User();
         PurchasePoint purchasePoint = new PurchasePoint();

@@ -6,9 +6,7 @@ import com.oocl.easymovie.entity.Seating;
 import com.oocl.easymovie.service.ScheduleService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/schedule")
@@ -27,6 +25,6 @@ public class ScheduleController {
     @GetMapping("/{scheduleId}/seats")
     ResultData<Seating> findScheduleByScheduleIdWithSeats(@PathVariable(value = "scheduleId")Long  scheduleId){
 
-        return ResultData.success(scheduleService.findScheduleByScheduleIdWithSeats(scheduleId));
+        return ResultData.success(scheduleService.findSeatByScheduleIdWithSeats(scheduleId));
     }
 }
