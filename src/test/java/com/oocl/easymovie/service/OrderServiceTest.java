@@ -1,20 +1,15 @@
 package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.entity.Order;
-import com.oocl.easymovie.entity.User;
+import com.oocl.easymovie.entity.Schedule;
 import com.oocl.easymovie.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,6 +20,9 @@ import static org.mockito.Mockito.doReturn;
 public class OrderServiceTest {
     @InjectMocks
     OrderService orderService;
+
+    @Mock
+    ScheduleService scheduleService;
 
     @Mock
     OrderRepository orderRepository;
@@ -45,8 +43,11 @@ public class OrderServiceTest {
     @Test
     void should_return_order_when_create_order_given_order() {
         //given
+        Schedule schedule = new Schedule();
+        schedule.setPrice((double) 50);
         Order order = new Order();
         doReturn(order).when(orderRepository).save(order);
+        doReturn(schedule).when(scheduleService).findById(order.getScheduleId());
 
         //when
         Order createdOrder = orderService.createOrder(order);
@@ -70,25 +71,5 @@ public class OrderServiceTest {
 
         //then
         assertEquals(2, newOrder.getSnacksId());
-    }
-
-    @Test
-    void should_return_order_in_page_when_find_order_by_userId_and_page_given_userId_page() {
-        //given
-        User user = new User();
-        Order order1 = new Order();
-        Order order2 = new Order();
-        List<Order> orderList = new ArrayList<Order>();
-        orderList.add(order1);
-        orderList.add(order2);
-        Page<Order> orderPage = new PageImpl<Order>(orderList);
-        doReturn(orderPage).when(orderRepository).findByUserId(user.getId(), PageRequest.of(0, 2));
-
-        //when
-        Page<Order> orderInPage = orderService.findOrderByUserIdAndPage(user.getId(),1,2);
-
-        //then
-        assertEquals(orderPage, orderInPage);
-
     }
 }

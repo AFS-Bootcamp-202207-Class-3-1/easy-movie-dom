@@ -48,7 +48,7 @@ public class PurchaseServiceTest {
         doReturn(purchasePoint).when(purchasePointRepository).save(purchasePoint);
 
         //when
-        Integer newCharge = purchasePointService.rechargeByUserId(user.getId(), "1-1-1");
+        Integer newCharge = purchasePointService.rechargeByUserId(user.getId(), "coffee-1-studio");
 
         //then
         assertEquals(101, newCharge);
