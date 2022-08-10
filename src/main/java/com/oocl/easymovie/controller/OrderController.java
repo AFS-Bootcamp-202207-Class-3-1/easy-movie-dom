@@ -1,9 +1,5 @@
 package com.oocl.easymovie.controller;
 
-import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
-import com.oocl.easymovie.dto.OrderRequest;
-import com.oocl.easymovie.dto.OrderResponse;
-import com.oocl.easymovie.dto.ResultData;
 import com.oocl.easymovie.dto.*;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Seating;
@@ -15,9 +11,7 @@ import com.oocl.easymovie.service.ScheduleService;
 import com.oocl.easymovie.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/orders")
@@ -56,28 +50,28 @@ public class OrderController {
     }
 
     @GetMapping("/all/{userId}")
-    public ResultData<List<OrderResponse>> findAllOrderByUserId(@PathVariable Long userId){
-        return ResultData.success(orderService.findAllOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    public ResultData<List<OrderContainMovieTheaterScheduleResponse>> findAllOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.getOrderLinkedDataListByTypes(orderService.findAllOrderByUserId(userId)));
     }
 
     @GetMapping("/used/{userId}")
-    public ResultData<List<OrderResponse>> findUsedOrderByUserId(@PathVariable Long userId){
-        return ResultData.success(orderService.findUsedOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    public ResultData<List<OrderContainMovieTheaterScheduleResponse>> findUsedOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.getOrderLinkedDataListByTypes(orderService.findUsedOrderByUserId(userId)));
     }
 
     @GetMapping("/rebook/{userId}")
-    public ResultData<List<OrderResponse>> findRebookOrderByUserId(@PathVariable Long userId){
-        return ResultData.success(orderService.findRebookOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    public ResultData<List<OrderContainMovieTheaterScheduleResponse>> findRebookOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.getOrderLinkedDataListByTypes(orderService.findRebookOrderByUserId(userId)));
     }
 
     @GetMapping("/paid/{userId}")
-    public ResultData<List<OrderResponse>> findPaidOrderByUserId(@PathVariable Long userId){
-        return ResultData.success(orderService.findPaidOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    public ResultData<List<OrderContainMovieTheaterScheduleResponse>> findPaidOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.getOrderLinkedDataListByTypes(orderService.findPaidOrderByUserId(userId)));
     }
 
     @GetMapping("/refund/{userId}")
-    public ResultData<List<OrderResponse>> findRefundOrderByUserId(@PathVariable Long userId){
-        return ResultData.success(orderService.findRefundOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    public ResultData<List<OrderContainMovieTheaterScheduleResponse>> findRefundOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.getOrderLinkedDataListByTypes(orderService.findRefundOrderByUserId(userId)));
     }
 
     @PostMapping("/payment/{orderId}")

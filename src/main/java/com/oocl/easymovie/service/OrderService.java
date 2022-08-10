@@ -1,17 +1,18 @@
 package com.oocl.easymovie.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
 import com.oocl.easymovie.entity.Seating;
 import com.oocl.easymovie.exception.OrderNotFoundException;
+import com.oocl.easymovie.mapper.OrderMapper;
 import com.oocl.easymovie.repository.OrderRepository;
 import com.oocl.easymovie.repository.SeatingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,12 +25,16 @@ public class OrderService {
     public static final Boolean IS_REFUND = true;
     private final OrderRepository orderRepository;
     private final ScheduleService scheduleService;
+    private final MovieService movieService;
+    private final TheaterService theaterService;
     private final PurchasePointService purchasePointService;
 
     @Autowired
     private SeatingService seatingService;
     @Autowired
     private SeatingRepository seatingRepository;
+    @Autowired
+    OrderMapper orderMapper;
 
 
     public Order findOrderById(Long id) {
@@ -79,6 +84,18 @@ public class OrderService {
 
     public List<Order> findRefundOrderByUserId(Long UserId) {
         return orderRepository.findRefundOrderByUserId(UserId, IS_REFUND);
+    }
+
+    public List<OrderContainMovieTheaterScheduleResponse> getOrderLinkedDataListByTypes(List<Order> orderList){
+        List<OrderContainMovieTheaterScheduleResponse> orderContainMovieTheaterScheduleResponseArrayList = new ArrayList<>();
+        orderList.forEach(order -> orderContainMovieTheaterScheduleResponseArrayList.add(
+                orderMapper.toOrderContainMovieTheaterSchedule(
+                        order
+                        ,movieService.findById(order.getMovieId())
+                        ,theaterService.findTheaterById(order.getTheaterId())
+                        , scheduleService.findById(order.getScheduleId())
+                )));
+        return orderContainMovieTheaterScheduleResponseArrayList;
     }
 
     public void payForOrder(Long orderId) {
@@ -137,9 +154,5 @@ public class OrderService {
 
     }
 
-
-//    public Page<Order> findOrderByUserIdAndPage(Long UserId, int page, int pageSize) {
-//        return orderRepository.findByUserId(UserId, PageRequest.of(page - 1, pageSize));
-//    }
 
 }
