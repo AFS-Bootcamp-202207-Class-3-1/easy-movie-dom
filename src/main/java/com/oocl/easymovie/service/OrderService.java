@@ -1,9 +1,10 @@
 package com.oocl.easymovie.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.exception.OrderNotFoundException;
 import com.oocl.easymovie.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +14,11 @@ import java.util.Objects;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ScheduleService scheduleService;
-
-    public OrderService(OrderRepository orderRepository, ScheduleService scheduleService) {
+    private final PurchasePointService purchasePointService;
+    public OrderService(OrderRepository orderRepository, ScheduleService scheduleService, PurchasePointService purchasePointService) {
         this.orderRepository = orderRepository;
         this.scheduleService = scheduleService;
+        this.purchasePointService = purchasePointService;
     }
 
     public Order findOrderById(Long id) {
@@ -55,8 +57,13 @@ public class OrderService {
         return orderRepository.findAllByUserId(UserId);
     }
 
-//    public Page<Order> findOrderByUserIdAndPage(Long UserId, int page, int pageSize) {
-//        return orderRepository.findByUserId(UserId, PageRequest.of(page - 1, pageSize));
-//    }
+    public void payForOrder(Long orderId) throws JsonProcessingException {
+        Order order = findOrderById(orderId);
+        purchasePointService.deductBalance(order.getUserId(), (int) order.getTotalPrice());
+        order.setIsPaid(true);
+        String key="key:"+order.getUserId()+order.getTheaterId()+order.getMovieId()+order.getExpirationTime();
+        order.setQuickMarkKey(key);
+        orderRepository.save(order);
+    }
 
 }

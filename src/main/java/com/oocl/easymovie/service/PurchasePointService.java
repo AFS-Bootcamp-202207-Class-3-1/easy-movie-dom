@@ -1,6 +1,7 @@
 package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.entity.PurchasePoint;
+import com.oocl.easymovie.exception.BalanceNotEnough;
 import com.oocl.easymovie.exception.UserNotFoundException;
 import com.oocl.easymovie.repository.PurchasePointRepository;
 import com.oocl.easymovie.util.ParseCode;
@@ -36,5 +37,15 @@ public class PurchasePointService {
         purchasePoint.setHistoryTotal(historyTotal + recharge);
         purchasePointRepository.save(purchasePoint);
         return balance + recharge;
+    }
+
+    public void deductBalance(Long userId,Integer price){
+        PurchasePoint purchasePoint = purchasePointRepository.findByUserId(userId);
+        if(purchasePoint.getBalance() < price){
+            throw new BalanceNotEnough();
+        }else{
+            purchasePoint.setBalance(purchasePoint.getBalance() - price);
+            purchasePointRepository.save(purchasePoint);
+        }
     }
 }

@@ -14,7 +14,8 @@ public class GlobalControllerAdvice {
             MovieNotFoundException.class,
             OrderNotFoundException.class,
             ScheduleNotFoundException.class,
-            CodeIllegalException.class})
+            CodeIllegalException.class,
+            BalanceNotEnough.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(Exception exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage());
