@@ -15,12 +15,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
@@ -78,6 +77,31 @@ class TheaterServiceTest {
         List<Theater> theaterByMovieId = theaterService.findTheaterByMovieId(1L);
         //then
         assertEquals(2, theaterByMovieId.size());
+    }
+
+    @Test
+    void should_return_theater_in_page_when_find_by_page_given_pageSize() {
+        //given
+
+        List<Theater> theaterGetByPage=new ArrayList<>();
+
+        Theater theater1 = new Theater();
+        theater1.setId(1L);
+        theaterGetByPage.add(theater1);
+
+        Theater theater2 = new Theater();
+        theater1.setId(2L);
+        theaterGetByPage.add(theater2);
+
+        Page<Theater> theaterPage = new PageImpl(theaterGetByPage);
+
+        doReturn(theaterPage).when(theaterRepository).findAll(PageRequest.of(0,2));
+
+        //when
+        Page<Theater> theaterByPage= theaterService.findTheaterByPage(1, 2);
+
+        //then
+        assertEquals(theaterPage, theaterByPage);
     }
 
 }
