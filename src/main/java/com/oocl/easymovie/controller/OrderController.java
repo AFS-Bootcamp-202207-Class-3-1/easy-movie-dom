@@ -1,6 +1,5 @@
 package com.oocl.easymovie.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
 import com.oocl.easymovie.dto.OrderRequest;
 import com.oocl.easymovie.dto.OrderResponse;
@@ -12,7 +11,6 @@ import com.oocl.easymovie.service.OrderService;
 import com.oocl.easymovie.service.ScheduleService;
 import com.oocl.easymovie.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,12 +50,28 @@ public class OrderController {
         return ResultData.success(orderMapper.toResponse(orderService.updateOrder(orderId,orderMapper.toEntity(orderRequest))));
     }
 
-    @GetMapping(params = {"userId"})
-    public ResultData<List<OrderResponse>> findByUserId(@RequestParam(name = "userId") Long userId){
-        return ResultData.success(orderService.findOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    @GetMapping("/used/{userId}")
+    public ResultData<List<OrderResponse>> findUsedOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.findUsedOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
     }
+
+    @GetMapping("/rebook/{userId}")
+    public ResultData<List<OrderResponse>> findRebookOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.findRebookOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/paid/{userId}")
+    public ResultData<List<OrderResponse>> findPaidOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.findPaidOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/refund/{userId}")
+    public ResultData<List<OrderResponse>> findRefundOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.findRefundOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    }
+
     @PostMapping("/payment/{orderId}")
-    public void payForOrders(@PathVariable Long orderId) throws JsonProcessingException {
+    public void payForOrders(@PathVariable Long orderId) {
         orderService.payForOrder(orderId);
     }
 

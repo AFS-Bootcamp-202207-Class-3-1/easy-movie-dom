@@ -1,6 +1,5 @@
 package com.oocl.easymovie.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.exception.OrderNotFoundException;
 import com.oocl.easymovie.repository.OrderRepository;
@@ -11,6 +10,10 @@ import java.util.Objects;
 
 @Service
 public class OrderService {
+    public static final Boolean IS_USED = true;
+    public static final Boolean IS_REBOOK = true;
+    public static final Boolean IS_PAID = true;
+    public static final Boolean IS_REFUND = true;
     private final OrderRepository orderRepository;
     private final ScheduleService scheduleService;
     private final PurchasePointService purchasePointService;
@@ -49,11 +52,23 @@ public class OrderService {
         return orderRepository.save(oldOrder);
     }
 
-    public List<Order> findOrderByUserId(Long UserId) {
-        return orderRepository.findAllByUserId(UserId);
+    public List<Order> findUsedOrderByUserId(Long UserId) {
+        return orderRepository.findUsedOrderByUserId(UserId,IS_USED);
     }
 
-    public void payForOrder(Long orderId) throws JsonProcessingException {
+    public List<Order> findRebookOrderByUserId(Long UserId) {
+        return orderRepository.findRebookOrderByUserId(UserId,IS_REBOOK);
+    }
+
+    public List<Order> findPaidOrderByUserId(Long UserId) {
+        return orderRepository.findPaidOrderByUserId(UserId,IS_PAID);
+    }
+
+    public List<Order> findRefundOrderByUserId(Long UserId) {
+        return orderRepository.findRefundOrderByUserId(UserId,IS_REFUND);
+    }
+
+    public void payForOrder(Long orderId) {
         Order order = findOrderById(orderId);
         purchasePointService.deductBalance(order.getUserId(), (int) order.getTotalPrice());
         order.setIsPaid(true);
