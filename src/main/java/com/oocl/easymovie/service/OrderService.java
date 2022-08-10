@@ -1,14 +1,22 @@
 package com.oocl.easymovie.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.easymovie.entity.Order;
+import com.oocl.easymovie.entity.Schedule;
+import com.oocl.easymovie.entity.Seating;
 import com.oocl.easymovie.exception.OrderNotFoundException;
 import com.oocl.easymovie.repository.OrderRepository;
+import com.oocl.easymovie.repository.SeatingRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
+@AllArgsConstructor
 public class OrderService {
     public static final Boolean IS_USED = true;
     public static final Boolean IS_REBOOK = true;
@@ -17,11 +25,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ScheduleService scheduleService;
     private final PurchasePointService purchasePointService;
-    public OrderService(OrderRepository orderRepository, ScheduleService scheduleService, PurchasePointService purchasePointService) {
-        this.orderRepository = orderRepository;
-        this.scheduleService = scheduleService;
-        this.purchasePointService = purchasePointService;
-    }
+
+    @Autowired
+    private SeatingService seatingService;
+    @Autowired
+    private SeatingRepository seatingRepository;
+
 
     public Order findOrderById(Long id) {
         return orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
@@ -53,28 +62,74 @@ public class OrderService {
     }
 
     public List<Order> findUsedOrderByUserId(Long UserId) {
-        return orderRepository.findUsedOrderByUserId(UserId,IS_USED);
+        return orderRepository.findUsedOrderByUserId(UserId, IS_USED);
     }
 
     public List<Order> findRebookOrderByUserId(Long UserId) {
-        return orderRepository.findRebookOrderByUserId(UserId,IS_REBOOK);
+        return orderRepository.findRebookOrderByUserId(UserId, IS_REBOOK);
     }
 
     public List<Order> findPaidOrderByUserId(Long UserId) {
-        return orderRepository.findPaidOrderByUserId(UserId,IS_PAID);
+        return orderRepository.findPaidOrderByUserId(UserId, IS_PAID);
     }
 
     public List<Order> findRefundOrderByUserId(Long UserId) {
-        return orderRepository.findRefundOrderByUserId(UserId,IS_REFUND);
+        return orderRepository.findRefundOrderByUserId(UserId, IS_REFUND);
     }
 
     public void payForOrder(Long orderId) {
         Order order = findOrderById(orderId);
         purchasePointService.deductBalance(order.getUserId(), (int) order.getTotalPrice());
         order.setIsPaid(true);
-        String key=String.valueOf(System.currentTimeMillis()) ;
+        String key = String.valueOf(System.currentTimeMillis());
         order.setQuickMarkKey(key);
         orderRepository.save(order);
     }
+
+    public void modifySeatsAndPrice(Long orderId, Seating seating) {
+        //这就要求插入数据的时候要插入每个场次的座位内容
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        int count = statisticsSeatedNumber(seating.getSeats());//统计买了几个座位
+        Schedule schedule = scheduleService.findById(order.getScheduleId());
+        double totalPrice = schedule.getPrice() * count;
+        order.setTotalPrice(totalPrice);
+        orderRepository.save(order);
+        Seating seatingWithOrder = seatingService.findSeatingById(order.getSeatingId());
+        String seatedStatus = mergeSeatStatus(seatingWithOrder.getSeats(), seating.getSeats());
+        seatingWithOrder.setSeats(seatedStatus);
+        seatingRepository.save(seatingWithOrder);
+    }
+
+    public int statisticsSeatedNumber(String seated) {
+        int count1 = 0;
+        for (int i = 0; i < seated.length(); i++) {
+            if (seated.charAt(i) != '1' || seated.charAt(i) != '0') {
+                if (seated.charAt(i) == '1') count1++;
+            }
+        }
+        return count1;
+    }
+
+    public String mergeSeatStatus(String seatWithOrder, String toSeated) {
+        String res = "";
+        for (int i = 0; i < seatWithOrder.length(); i++) {
+            if (seatWithOrder.charAt(i) == '1') {
+                res += '1';
+                continue;
+            }
+            if (toSeated.charAt(i) == '1') {
+                res += '1';
+                continue;
+            }
+            res += '0';
+        }
+        return res;
+
+    }
+
+
+//    public Page<Order> findOrderByUserIdAndPage(Long UserId, int page, int pageSize) {
+//        return orderRepository.findByUserId(UserId, PageRequest.of(page - 1, pageSize));
+//    }
 
 }

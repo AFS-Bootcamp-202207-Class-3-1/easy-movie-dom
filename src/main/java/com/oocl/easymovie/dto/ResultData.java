@@ -18,6 +18,13 @@ public class ResultData<T> {
     resultData.setData(data);
     return resultData;
   }
+  public static ResultData<Object> success(){
+    ResultData<Object> resultData=new ResultData<>();
+    resultData.setStatus("success");
+    resultData.setData(null);
+    resultData.setTimestamp(System.currentTimeMillis());
+    return resultData;
+  }
 
 }
 

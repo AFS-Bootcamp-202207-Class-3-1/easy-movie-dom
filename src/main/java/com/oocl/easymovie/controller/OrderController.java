@@ -4,8 +4,11 @@ import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
 import com.oocl.easymovie.dto.OrderRequest;
 import com.oocl.easymovie.dto.OrderResponse;
 import com.oocl.easymovie.dto.ResultData;
+import com.oocl.easymovie.dto.*;
 import com.oocl.easymovie.entity.Order;
+import com.oocl.easymovie.entity.Seating;
 import com.oocl.easymovie.mapper.OrderMapper;
+import com.oocl.easymovie.mapper.SeatingMapper;
 import com.oocl.easymovie.service.MovieService;
 import com.oocl.easymovie.service.OrderService;
 import com.oocl.easymovie.service.ScheduleService;
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
 public class OrderController {
     @Autowired
     OrderMapper orderMapper;
+    @Autowired
+    SeatingMapper seatingMapper;
     @Autowired
     OrderService orderService;
     @Autowired
@@ -76,4 +81,11 @@ public class OrderController {
     }
 
 
+    @PostMapping("/{orderId}/seats")
+    public ResultData<Object> modifySeatsAndPrice(@PathVariable(value = "orderId") Long orderId, @RequestBody SeatingRequest seatingRequest){
+        Seating seating= seatingMapper.toEntity(seatingRequest);
+        orderService.modifySeatsAndPrice(orderId,seating);
+
+        return ResultData.success();
+    }
 }
