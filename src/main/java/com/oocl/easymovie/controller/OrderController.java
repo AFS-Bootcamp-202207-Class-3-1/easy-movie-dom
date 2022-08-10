@@ -1,5 +1,6 @@
 package com.oocl.easymovie.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
 import com.oocl.easymovie.dto.OrderRequest;
 import com.oocl.easymovie.dto.OrderResponse;
@@ -55,4 +56,11 @@ public class OrderController {
     public ResultData<List<OrderResponse>> findByUserId(@RequestParam(name = "userId") Long userId){
         return ResultData.success(orderService.findOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
     }
+///api/orders/payment/{orderId} 服务端要扣除该用户的余额，然后更改订单的状态，生成二维码的key
+    @GetMapping("/payment/{orderId}")
+    public void payForOrders(@PathVariable Long orderId) throws JsonProcessingException {
+        orderService.payForOrder(orderId);
+    }
+
+
 }
