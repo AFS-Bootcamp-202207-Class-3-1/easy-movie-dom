@@ -55,6 +55,11 @@ public class OrderController {
         return ResultData.success(orderMapper.toResponse(orderService.updateOrder(orderId,orderMapper.toEntity(orderRequest))));
     }
 
+    @GetMapping("/all/{userId}")
+    public ResultData<List<OrderResponse>> findAllOrderByUserId(@PathVariable Long userId){
+        return ResultData.success(orderService.findAllOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));
+    }
+
     @GetMapping("/used/{userId}")
     public ResultData<List<OrderResponse>> findUsedOrderByUserId(@PathVariable Long userId){
         return ResultData.success(orderService.findUsedOrderByUserId(userId).stream().map(order -> orderMapper.toResponse(order)).collect(Collectors.toList()));

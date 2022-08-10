@@ -20,4 +20,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
 
     @Query(value = "select * from `order` o where o.user_id=?1 and o.is_refund=?2", nativeQuery = true)
     List<Order> findRefundOrderByUserId(Long userId,boolean isRefund);
+
+    @Query(value = "select * from `order` o where o.user_id=?1", nativeQuery = true)
+    List<Order> findAllOrderByUserId(Long userId);
 }
