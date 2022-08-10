@@ -110,7 +110,7 @@ public class OrderService {
 
     }
 
-    public int statisticsSeatedNumber(String seated) {
+    private int statisticsSeatedNumber(String seated) {
         int count1 = 0;
         for (int i = 0; i < seated.length(); i++) {
             if (seated.charAt(i) != '1' || seated.charAt(i) != '0') {
@@ -120,7 +120,7 @@ public class OrderService {
         return count1;
     }
 
-    public String mergeSeatStatus(String seatWithOrder, String toSeated) {
+    private String mergeSeatStatus(String seatWithOrder, String toSeated) {
         String res = "";
         for (int i = 0; i < seatWithOrder.length(); i++) {
             if (seatWithOrder.charAt(i) == '1') {
