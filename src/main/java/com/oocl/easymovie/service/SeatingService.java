@@ -13,10 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class SeatingService {
-
-
     @Autowired
     SeatingRepository seatingRepository;
+
     public Seating findSeatingById(Long id){
         return seatingRepository.findById(id).orElseThrow(SeatingNotFoundException::new);
     }

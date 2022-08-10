@@ -1,5 +1,7 @@
 package com.oocl.easymovie.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
 import com.oocl.easymovie.entity.Seating;
@@ -7,11 +9,9 @@ import com.oocl.easymovie.exception.OrderNotFoundException;
 import com.oocl.easymovie.repository.OrderRepository;
 import com.oocl.easymovie.repository.SeatingRepository;
 import lombok.AllArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -136,5 +136,10 @@ public class OrderService {
         return res;
 
     }
+
+
+//    public Page<Order> findOrderByUserIdAndPage(Long UserId, int page, int pageSize) {
+//        return orderRepository.findByUserId(UserId, PageRequest.of(page - 1, pageSize));
+//    }
 
 }
