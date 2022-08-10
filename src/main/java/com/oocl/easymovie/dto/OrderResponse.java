@@ -13,6 +13,7 @@ import java.util.Date;
 public class OrderResponse {
 
     private Long id;
+    private Long userId;
     private Long movieId;
     private Long theaterId;
     private Long scheduleId;
