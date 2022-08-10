@@ -29,7 +29,6 @@ INSERT INTO movie (id, box_office, create_time, description, duration, hot, imag
 
 INSERT INTO theater (id, address, create_time, description, image_url, name, phone_number, update_time) VALUES (1, '珠海市香洲区南方软件园', '2022-08-08 15:36:27', '测试', 'https://static2.17youhui.com.cn/uploads/sites/31/2021/12/26a647063ce46d291bfbfa7b5d2f1f8d.jpg', 'Coffee Studio', '110', '2022-08-08 15:37:02');
 
-
 INSERT INTO theater_movie_relation (id, movie_id, theater_id) VALUES (1, 1, 1);
 INSERT INTO theater_movie_relation (id, movie_id, theater_id) VALUES (2, 2, 1);
 
