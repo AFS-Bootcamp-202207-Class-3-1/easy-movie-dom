@@ -1,7 +1,6 @@
 package com.oocl.easymovie.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.exception.OrderNotFoundException;
 import com.oocl.easymovie.repository.OrderRepository;
@@ -36,9 +35,6 @@ public class OrderService {
 
     public Order updateOrder(Long id, Order newOrder) {
         Order oldOrder = orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
-//        if (!Objects.isNull(newOrder.getQuickMarkKey())) {
-//            oldOrder.setQuickMarkKey(newOrder.getQuickMarkKey());
-//        }
         if (!Objects.isNull(newOrder.getScheduleId())) {
             oldOrder.setScheduleId(newOrder.getScheduleId());
         }
@@ -61,7 +57,7 @@ public class OrderService {
         Order order = findOrderById(orderId);
         purchasePointService.deductBalance(order.getUserId(), (int) order.getTotalPrice());
         order.setIsPaid(true);
-        String key="key:"+order.getUserId()+order.getTheaterId()+order.getMovieId()+order.getExpirationTime();
+        String key=String.valueOf(System.currentTimeMillis()) ;
         order.setQuickMarkKey(key);
         orderRepository.save(order);
     }
