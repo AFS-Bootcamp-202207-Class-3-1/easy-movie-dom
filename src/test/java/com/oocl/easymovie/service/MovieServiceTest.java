@@ -1,20 +1,6 @@
 package com.oocl.easymovie.service;
 
-import com.oocl.easymovie.entity.User;
-import com.oocl.easymovie.exception.UserNotFoundException;
-import com.oocl.easymovie.repository.UserRepository;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
