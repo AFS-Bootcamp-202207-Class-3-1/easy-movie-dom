@@ -1,4 +1,4 @@
-drop table order;
+drop table `order`;
 
 create table if not exists `order`
 (
