@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -192,5 +193,13 @@ public class OrderService {
             res += seatingWithSchedule.charAt(i);
         }
         return res;
+    }
+
+    public void redemptionTicket(String key) {
+        Optional<Order> orderOptional = orderRepository.findOrderByQuickMarkKeyAndIsTicketUsedAndIsPaid(key, false, true);
+        Order order = orderOptional.orElseThrow(OrderNotFoundException::new);
+        order.setIsPaid(false);
+        order.setIsTicketUsed(true);
+        orderRepository.save(order);
     }
 }

@@ -1,9 +1,9 @@
 package com.oocl.easymovie.service;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import com.oocl.easymovie.dto.VIP;
 import com.oocl.easymovie.entity.PurchasePoint;
 import com.oocl.easymovie.entity.User;
-import com.oocl.easymovie.entity.VIP;
 import com.oocl.easymovie.exception.UserAlreadyExistsException;
 import com.oocl.easymovie.exception.UserAuthenticationFailedException;
 import com.oocl.easymovie.exception.UserNotFoundException;
