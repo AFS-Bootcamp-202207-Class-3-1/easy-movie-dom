@@ -62,4 +62,8 @@ public class MovieService {
         List<Long> directorIdList = directorMovieRelationRepository.findDirectorIdByMovieId(movieId);
         return characterRepository.findAllById(directorIdList);
     }
+
+    public List<Movie> findTop10Movie() {
+        return movieRepository.findByHot();
+    }
 }

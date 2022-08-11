@@ -43,4 +43,9 @@ public class MovieController {
         return ResultData.success(movieMapper.toResponse(movie, directorList, actorList));
     }
 
+    @GetMapping("/top")
+    public ResultData<List<Movie>> findTop10Movie(){
+        return ResultData.success(movieService.findTop10Movie());
+    }
+
 }

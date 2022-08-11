@@ -97,7 +97,7 @@ public class OrderService {
 
     public void payForOrder(Long orderId) {
         Order order = findOrderById(orderId);
-        purchasePointService.deductBalance(order.getUserId(), (int) order.getTotalPrice());
+        purchasePointService.deductBalance(order.getUserId(), order.getTotalPrice());
         order.setIsPaid(true);
         order.setIsRefund(false);
         order.setIsTicketUsed(false);

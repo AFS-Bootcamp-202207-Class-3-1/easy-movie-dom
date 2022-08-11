@@ -183,7 +183,7 @@ public class OrderServiceTest {
         //given
         Order order = new Order();
         doReturn(order).when(orderService).findOrderById(order.getId());
-        doNothing().when(purchasePointService).deductBalance(order.getUserId(), (int) order.getTotalPrice());
+        doNothing().when(purchasePointService).deductBalance(order.getUserId(), order.getTotalPrice());
 
         //when
         orderService.payForOrder(order.getId());

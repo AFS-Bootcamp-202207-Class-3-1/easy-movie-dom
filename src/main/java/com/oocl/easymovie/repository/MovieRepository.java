@@ -17,4 +17,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     Page<Movie> findByNameContaining(String name, Pageable pageable);
 
+    @Query(value = "select m from movie m order by m.hot desc limit 0,10",nativeQuery = true)
+    List<Movie> findByHot();
+
 }
