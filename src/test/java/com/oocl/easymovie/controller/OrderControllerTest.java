@@ -24,12 +24,11 @@ public class OrderControllerTest {
     @Test
     void should_return_order_when_find_order_contain_movie_theater_schedule_given_orderId() throws Exception {
         //given
-        Order order = new Order();
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/order/{orderId}", order.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/orders/{orderId}", 1))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data.theater.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.theater.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.theater.name").value("Coffee Studio"));
 
         //then
