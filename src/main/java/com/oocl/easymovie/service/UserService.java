@@ -1,8 +1,11 @@
 package com.oocl.easymovie.service;
-
-import com.oocl.easymovie.entity.PurchasePoint;
-import com.oocl.easymovie.entity.User;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.oocl.easymovie.entity.VIP;
+import com.oocl.easymovie.entity.PurchasePoint;
+import cn.hutool.crypto.digest.DigestUtil;
+import com.oocl.easymovie.entity.User;
+import com.oocl.easymovie.exception.UserAlreadyExistsException;
+import com.oocl.easymovie.exception.UserAuthenticationFailedException;
 import com.oocl.easymovie.exception.UserNotFoundException;
 import com.oocl.easymovie.repository.PurchasePointRepository;
 import com.oocl.easymovie.repository.UserRepository;
@@ -29,6 +32,29 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    public long login(User user) {
+        User data = userRepository.findOneByUsername(user.getUsername());
+        if (data != null && DigestUtil.bcryptCheck(user.getPassword(), data.getPassword())) {
+            return data.getId();
+        }
+        throw new UserAuthenticationFailedException();
+    }
+
+//    public boolean checkPassword(Long id, String password) {
+//        User user = userMapper.selectById(id);
+//        return DigestUtil.bcryptCheck(password, user.getPassword());
+//    }
+
+    public void saveUser(User user) {
+        User data = userRepository.findOneByUsername(user.getUsername());
+        if(data==null){
+            user.setPassword(DigestUtil.bcrypt(user.getPassword()));
+            this.save(user);
+        }else{
+            throw new UserAlreadyExistsException();
+        }
     }
 
     public User update(Long id, User userRequest) {
