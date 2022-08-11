@@ -1,6 +1,10 @@
 package com.oocl.easymovie.entity;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,33 +14,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Entity(name = "[order]")
-@Getter
-@Setter
+@Entity
+@Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
     private Long movieId;
-    private Long theaterId;
-    private Long scheduleId;
-    private Integer votes;
-    private String quickMarkKey;
-    private double snacksTotalPrice;
-    private Long snacksId;
-    private double totalPrice;
-
-    private Boolean isTicketUsed;
-    private Boolean isPaid;
-    private Boolean isRebook;
-    private Boolean isRefund;
-
-    private Date expirationTime;
-    private String seats;
+    private Long userId;
+    private String comment;
+    private Double score;
     @CreationTimestamp
     private Date createTime;
     @UpdateTimestamp

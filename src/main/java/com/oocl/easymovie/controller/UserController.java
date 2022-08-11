@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.oocl.easymovie.dto.ResultData;
 import com.oocl.easymovie.dto.UserRequest;
 import com.oocl.easymovie.dto.UserResponse;
-import com.oocl.easymovie.entity.VIP;
+import com.oocl.easymovie.dto.VIP;
 import com.oocl.easymovie.mapper.UserMapper;
 import com.oocl.easymovie.service.UserService;
 import lombok.RequiredArgsConstructor;

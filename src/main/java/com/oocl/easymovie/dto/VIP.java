@@ -1,4 +1,4 @@
-package com.oocl.easymovie.entity;
+package com.oocl.easymovie.dto;
 
 public class VIP {
     private Integer level;

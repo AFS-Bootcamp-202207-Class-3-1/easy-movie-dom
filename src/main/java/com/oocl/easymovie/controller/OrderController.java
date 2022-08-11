@@ -90,5 +90,10 @@ public class OrderController {
         return ResultData.success();
     }
 
+    @GetMapping(value = "/ticket-redemption", params = "key")
+    public ResultData<Object> redemptionTicket(@RequestParam(value = "key") String key) {
+        orderService.redemptionTicket(key);
+        return ResultData.success();
+    }
 
 }
