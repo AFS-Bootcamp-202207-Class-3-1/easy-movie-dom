@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SeatingMapper {
-    public Seating toEntity(SeatingRequest seatingRequest){
-        Seating seating=new Seating();
-        BeanUtils.copyProperties(seating,seatingRequest);
+    public Seating toEntity(SeatingRequest seatingRequest) {
+        Seating seating = new Seating();
+        BeanUtils.copyProperties(seatingRequest, seating);
         return seating;
     }
 
