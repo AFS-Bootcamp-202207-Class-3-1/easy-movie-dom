@@ -1,10 +1,7 @@
 package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
-import com.oocl.easymovie.entity.Order;
-import com.oocl.easymovie.entity.PurchasePoint;
-import com.oocl.easymovie.entity.Schedule;
-import com.oocl.easymovie.entity.Seating;
+import com.oocl.easymovie.entity.*;
 import com.oocl.easymovie.exception.BalanceNotEnough;
 import com.oocl.easymovie.exception.OrderNotFoundException;
 import com.oocl.easymovie.exception.ScheduleNotFoundException;
@@ -35,7 +32,6 @@ public class OrderService {
     private final MovieService movieService;
     private final TheaterService theaterService;
     private final PurchasePointService purchasePointService;
-
     private final PurchasePointRepository purchasePointRepository;
 
     @Autowired
@@ -44,6 +40,8 @@ public class OrderService {
     private SeatingRepository seatingRepository;
     @Autowired
     private ScheduleRepository scheduleRepository;
+    @Autowired
+    private UserService userService;
     @Autowired
     OrderMapper orderMapper;
 
@@ -98,6 +96,8 @@ public class OrderService {
 
     public void payForOrder(Long orderId) {
         Order order = findOrderById(orderId);
+        VIP vip =  userService.findVIPLevelAndDiscountById(order.getUserId());
+        order.setTotalPrice(order.getTotalPrice() * vip.getDiscount());
         purchasePointService.deductBalance(order.getUserId(), order.getTotalPrice());
         order.setIsPaid(true);
         order.setIsRefund(false);

@@ -43,13 +43,19 @@ public class UserService {
     }
 
 
-    public String saveUser(User user) {
+    public String registerUser(User user) {
         User data = userRepository.findOneByUsername(user.getUsername());
         if(data!=null){
             throw new UserAlreadyExistsException();
         }
         user.setPassword(DigestUtil.bcrypt(user.getPassword()));
         this.save(user);
+        User newUser = userRepository.findOneByUsername(user.getUsername());
+        PurchasePoint purchasePoint = new PurchasePoint();
+        purchasePoint.setUserId(newUser.getId());
+        purchasePoint.setBalance(0.0);
+        purchasePoint.setHistoryTotal(0.0);
+        purchasePointRepository.save(purchasePoint);
         return "register successfully!";
     }
 

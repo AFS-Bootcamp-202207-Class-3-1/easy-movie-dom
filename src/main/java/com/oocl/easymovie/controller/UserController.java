@@ -51,7 +51,7 @@ public class UserController {
 
     @PostMapping("/user/register")
     public ResultData<String> createUser(@RequestBody UserRequest userRequest) {
-        return ResultData.success(userService.saveUser(userMapper.toEntity(userRequest)));
+        return ResultData.success(userService.registerUser(userMapper.toEntity(userRequest)));
     }
 
 }
