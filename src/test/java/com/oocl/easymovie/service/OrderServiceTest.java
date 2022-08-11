@@ -1,5 +1,6 @@
 package com.oocl.easymovie.service;
 
+import com.oocl.easymovie.dto.VIP;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
 import com.oocl.easymovie.entity.User;
@@ -40,10 +41,7 @@ public class OrderServiceTest {
     PurchasePointService purchasePointService;
 
     @Mock
-    SeatingService seatingService;
-
-    @Mock
-    SeatingRepository seatingRepository;
+    UserService userService;
 
     @Test
     void should_return_order_when_get_by_id_given_orderId() {
@@ -182,8 +180,14 @@ public class OrderServiceTest {
     void should_return_null_when_pay_for_order_given_orderId() {
         //given
         Order order = new Order();
+        order.setUserId(1L);
+        order.setTotalPrice(50);
+        VIP vip = new VIP();
+        vip.setDiscount(0.85);
+        vip.setLevel(3);
         doReturn(order).when(orderService).findOrderById(order.getId());
         doNothing().when(purchasePointService).deductBalance(order.getUserId(), order.getTotalPrice());
+        doReturn(vip).when(userService).findVIPLevelAndDiscountById(order.getUserId());
 
         //when
         orderService.payForOrder(order.getId());
