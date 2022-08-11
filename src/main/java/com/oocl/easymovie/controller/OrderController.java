@@ -1,6 +1,5 @@
 package com.oocl.easymovie.controller;
 
-import com.oocl.easymovie.advice.WebSocketServer;
 import com.oocl.easymovie.dto.*;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Seating;
@@ -95,8 +94,8 @@ public class OrderController {
     @GetMapping(value = "/ticket-redemption", params = "key")
     public ResultData<Object> redemptionTicket(@RequestParam(value = "key") String key) throws IOException {
         orderService.redemptionTicket(key);
-        String message = "ticketUsed";
-        WebSocketServer.sendInfo(message, key);//推送给前端
+//        String message = "ticketUsed";
+//        WebSocketServer.sendInfo(message, key);//推送给前端
         return ResultData.success();
     }
 
