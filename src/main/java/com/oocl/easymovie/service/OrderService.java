@@ -2,11 +2,11 @@ package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
 import com.oocl.easymovie.dto.VIP;
-import com.oocl.easymovie.entity.*;
-import com.oocl.easymovie.exception.BalanceNotEnough;
-import com.oocl.easymovie.exception.OrderNotFoundException;
-import com.oocl.easymovie.exception.ScheduleNotFoundException;
-import com.oocl.easymovie.exception.SeatingNotFoundException;
+import com.oocl.easymovie.entity.Order;
+import com.oocl.easymovie.entity.PurchasePoint;
+import com.oocl.easymovie.entity.Schedule;
+import com.oocl.easymovie.entity.Seating;
+import com.oocl.easymovie.exception.*;
 import com.oocl.easymovie.mapper.OrderMapper;
 import com.oocl.easymovie.repository.OrderRepository;
 import com.oocl.easymovie.repository.PurchasePointRepository;
@@ -155,7 +155,8 @@ public class OrderService {
 
     public void refundOrdersById(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
-//        if(order.getIsRefund())throw new RuntimeException("订单退款失败"); 待完善
+        if (order.getIsRefund()) throw new OrderRefundException();
+        if (order.getIsTicketUsed()) throw new OrderRefundException();
         Long userId = order.getUserId();
         Schedule schedule = scheduleRepository.findById(order.getScheduleId()).orElseThrow(ScheduleNotFoundException::new);
         Seating seating = seatingRepository.findById(schedule.getSeatingId()).orElseThrow(SeatingNotFoundException::new);
