@@ -1,7 +1,9 @@
 package com.oocl.easymovie.controller;
 
+import com.oocl.easymovie.dto.ResultData;
 import com.oocl.easymovie.dto.UserRequest;
 import com.oocl.easymovie.dto.UserResponse;
+import com.oocl.easymovie.entity.VIP;
 import com.oocl.easymovie.mapper.UserMapper;
 import com.oocl.easymovie.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,11 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponse findById(@PathVariable Long id) {
         return userMapper.toResponse(userService.findById(id));
+    }
+
+    @GetMapping("/level/{id}")
+    public ResultData<VIP> findVIPLevelAndDiscountById(@PathVariable Long id) {
+        VIP vip = userService.findVIPLevelAndDiscountById(id);
+        return ResultData.success(vip);
     }
 }

@@ -1,12 +1,13 @@
 package com.oocl.easymovie.service;
 
+import com.oocl.easymovie.entity.PurchasePoint;
 import com.oocl.easymovie.entity.User;
+import com.oocl.easymovie.entity.VIP;
 import com.oocl.easymovie.exception.UserNotFoundException;
+import com.oocl.easymovie.repository.PurchasePointRepository;
 import com.oocl.easymovie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  * @author edward
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PurchasePointRepository purchasePointRepository;
 
     public User save(User user) {
         if (user == null) {
@@ -40,5 +42,25 @@ public class UserService {
         userRequest.setId(id);
 
         return userRepository.save(user);
+    }
+
+    public VIP findVIPLevelAndDiscountById(Long id) {
+        VIP vip = new VIP();
+        PurchasePoint purchasePoint = purchasePointRepository.findByUserId(id);
+        Integer historyTotal = purchasePoint.getHistoryTotal();
+        if(historyTotal==null||(historyTotal>=0&&historyTotal<200)){
+            vip.setLevel(0);
+            vip.setDiscount(1);
+        }else if(historyTotal<500){
+            vip.setLevel(1);
+            vip.setDiscount(0.95);
+        }else if(historyTotal<800){
+            vip.setLevel(2);
+            vip.setDiscount(0.9);
+        }else{
+            vip.setLevel(3);
+            vip.setDiscount(0.85);
+        }
+        return vip;
     }
 }
