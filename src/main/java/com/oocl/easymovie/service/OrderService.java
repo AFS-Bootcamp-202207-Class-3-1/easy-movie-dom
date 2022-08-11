@@ -153,11 +153,12 @@ public class OrderService {
 
     public void refundOrdersById(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+//        if(order.getIsRefund())throw new RuntimeException("订单退款失败"); 待完善
         Long userId = order.getUserId();
         Schedule schedule = scheduleRepository.findById(order.getScheduleId()).orElseThrow(ScheduleNotFoundException::new);
         Seating seating = seatingRepository.findById(schedule.getSeatingId()).orElseThrow(SeatingNotFoundException::new);
         //退款，更新用户余额
-        refundBalance(userId, (int) order.getTotalPrice());
+        refundBalance(userId, order.getTotalPrice());
         //解锁Schedule中Seating的seats
         String unlockSeating = unlockSeating(seating.getSeats(), order.getSeats());
         seating.setSeats(unlockSeating);
@@ -172,11 +173,11 @@ public class OrderService {
 
     }
 
-    private void refundBalance(Long userId, Integer price) {
+    private void refundBalance(Long userId, Double price) {
         PurchasePoint purchasePoint = purchasePointRepository.findByUserId(userId);
         if (Objects.isNull(purchasePoint)) throw new BalanceNotEnough();
         if (Objects.nonNull(price) && price > 0) {
-            purchasePoint.setBalance(purchasePoint.getBalance() - price);
+            purchasePoint.setBalance(purchasePoint.getBalance() + price);
         }
         purchasePointRepository.save(purchasePoint);
     }
