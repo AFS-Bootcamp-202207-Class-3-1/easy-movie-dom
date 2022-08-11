@@ -12,6 +12,8 @@ import com.oocl.easymovie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @author edward
  */
@@ -49,6 +51,8 @@ public class UserService {
             throw new UserAlreadyExistsException();
         }
         user.setPassword(DigestUtil.bcrypt(user.getPassword()));
+        user.setGender("secrecy");
+        user.setBirthday(new Date());
         this.save(user);
         User newUser = userRepository.findOneByUsername(user.getUsername());
         PurchasePoint purchasePoint = new PurchasePoint();
