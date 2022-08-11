@@ -43,6 +43,8 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    implementation 'cn.dev33:sa-token-spring-boot-starter:1.30.0'
+    implementation 'cn.hutool:hutool-all:5.8.5'
 }
 
 tasks.named('test') {

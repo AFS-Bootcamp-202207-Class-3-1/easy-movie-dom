@@ -9,5 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class PurchasePointResponse {
-    private Integer balance;
+    private Double balance;
 }

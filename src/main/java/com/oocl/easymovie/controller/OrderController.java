@@ -11,6 +11,7 @@ import com.oocl.easymovie.service.ScheduleService;
 import com.oocl.easymovie.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -44,10 +45,6 @@ public class OrderController {
         return ResultData.success(orderMapper.toResponse(orderService.createOrder(orderMapper.toEntity(orderRequest))));
     }
 
-    @PutMapping("/{orderId}")
-    public ResultData<OrderResponse> updateOrder(@PathVariable Long orderId,@RequestBody OrderRequest orderRequest){
-        return ResultData.success(orderMapper.toResponse(orderService.updateOrder(orderId,orderMapper.toEntity(orderRequest))));
-    }
 
     @GetMapping("/all/{userId}")
     public ResultData<List<OrderContainMovieTheaterScheduleResponse>> findAllOrderByUserId(@PathVariable Long userId){
@@ -81,10 +78,22 @@ public class OrderController {
 
 
     @PostMapping("/{orderId}/seats")
-    public ResultData<Object> modifySeatsAndPrice(@PathVariable(value = "orderId") Long orderId, @RequestBody SeatingRequest seatingRequest){
-        Seating seating= seatingMapper.toEntity(seatingRequest);
-        orderService.modifySeatsAndPrice(orderId,seating);
-
+    public ResultData<Object> modifySeatsAndPrice(@PathVariable(value = "orderId") Long orderId, @RequestBody SeatingRequest seatingRequest) {
+        Seating seating = seatingMapper.toEntity(seatingRequest);
+        orderService.modifySeatsAndPrice(orderId, seating);
         return ResultData.success();
     }
+
+    @PostMapping("/refund/{orderId}")
+    public ResultData<Object> refundForOrders(@PathVariable Long orderId) {
+        orderService.refundOrdersById(orderId);
+        return ResultData.success();
+    }
+
+    @GetMapping(value = "/ticket-redemption", params = "key")
+    public ResultData<Object> redemptionTicket(@RequestParam(value = "key") String key) {
+        orderService.redemptionTicket(key);
+        return ResultData.success();
+    }
+
 }

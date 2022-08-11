@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PurchasePointMapper {
 
-    public PurchasePointResponse toResponse(Integer balance) {
+    public PurchasePointResponse toResponse(Double balance) {
         PurchasePointResponse response = new PurchasePointResponse();
         response.setBalance(balance);
         return response;

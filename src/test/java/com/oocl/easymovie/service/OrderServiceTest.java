@@ -1,8 +1,11 @@
 package com.oocl.easymovie.service;
 
+import com.oocl.easymovie.dto.VIP;
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
-import com.oocl.easymovie.entity.Seating;
+import com.oocl.easymovie.entity.User;
+import com.oocl.easymovie.exception.OrderNotFoundException;
+import com.oocl.easymovie.exception.UserNotFoundException;
 import com.oocl.easymovie.repository.OrderRepository;
 import com.oocl.easymovie.repository.SeatingRepository;
 import org.junit.jupiter.api.Test;
@@ -13,9 +16,12 @@ import org.mockito.Spy;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -35,10 +41,7 @@ public class OrderServiceTest {
     PurchasePointService purchasePointService;
 
     @Mock
-    SeatingService seatingService;
-
-    @Mock
-    SeatingRepository seatingRepository;
+    UserService userService;
 
     @Test
     void should_return_order_when_get_by_id_given_orderId() {
@@ -51,6 +54,17 @@ public class OrderServiceTest {
 
         //then
         assertEquals(order, orderGotById);
+    }
+
+    @Test
+    void should_throw_exception_when_get_order_by_id_given_wrong_orderId() {
+        //given
+
+        //when
+        OrderNotFoundException exception = assertThrows(OrderNotFoundException.class, () -> orderService.findOrderById(999L));
+
+        //then
+        assertEquals("order not found", exception.getMessage());
     }
 
     @Test
@@ -67,23 +81,6 @@ public class OrderServiceTest {
 
         //then
         assertEquals(order, createdOrder);
-    }
-
-    @Test
-    void should_return_order_when_update_order_given_id_and_a_update_request() {
-        //given
-        Order order = new Order();
-        order.setSnacksId((long) 1);
-        Order orderRequest = new Order();
-        orderRequest.setSnacksId((long) 2);
-        doReturn(Optional.of(order)).when(orderRepository).findById(order.getId());
-        doReturn(order).when(orderRepository).save(order);
-
-        //when
-        Order newOrder = orderService.updateOrder(order.getId(), orderRequest);
-
-        //then
-        assertEquals(2, newOrder.getSnacksId());
     }
 
 //    @Test
@@ -107,11 +104,90 @@ public class OrderServiceTest {
 //    }
 
     @Test
+    void should_return_order_list_when_get_order_given_userId() {
+        //given
+        Order order1 = new Order();
+        Order order2 = new Order();
+        User user = new User();
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order1);
+        orderList.add(order2);
+        doReturn(orderList).when(orderRepository).findAllOrderByUserId(user.getId());
+
+        //when
+        List<Order> gotOrder = orderService.findAllOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrder);
+
+    }
+
+    @Test
+    void should_get_used_order_when_get_used_order_given_userId() {
+        //given
+        User user = new User();
+        Order order = new Order();
+        order.setIsTicketUsed(true);
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order);
+        doReturn(orderList).when(orderRepository).findUsedOrderByUserId(user.getId(), true);
+
+        //when
+        List<Order> gotOrders = orderService.findUsedOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrders);
+
+    }
+
+    @Test
+    void should_return_rebooked_order_list_when_get_rebook_order_given_userId() {
+        //given
+        User user = new User();
+        Order order = new Order();
+        order.setIsRebook(true);
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order);
+        doReturn(orderList).when(orderRepository).findRebookOrderByUserId(user.getId(), true);
+
+        //when
+        List<Order> gotOrders = orderService.findRebookOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrders);
+
+    }
+
+    @Test
+    void should_return_paid_order_when_get_paid_order_given_userId() {
+        //given
+        User user = new User();
+        Order order = new Order();
+        order.setIsPaid(true);
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order);
+        doReturn(orderList).when(orderRepository).findPaidOrderByUserId(user.getId(), true);
+
+        //when
+        List<Order> gotOrders = orderService.findPaidOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrders);
+
+    }
+
+    @Test
     void should_return_null_when_pay_for_order_given_orderId() {
         //given
         Order order = new Order();
+        order.setUserId(1L);
+        order.setTotalPrice(50);
+        VIP vip = new VIP();
+        vip.setDiscount(0.85);
+        vip.setLevel(3);
         doReturn(order).when(orderService).findOrderById(order.getId());
-        doNothing().when(purchasePointService).deductBalance(order.getUserId(), (int) order.getTotalPrice());
+        doNothing().when(purchasePointService).deductBalance(order.getUserId(), order.getTotalPrice());
+        doReturn(vip).when(userService).findVIPLevelAndDiscountById(order.getUserId());
 
         //when
         orderService.payForOrder(order.getId());
@@ -119,29 +195,5 @@ public class OrderServiceTest {
         //then
         verify(orderRepository, times(1)).save(order);
 
-    }
-
-    @Test
-    void should_return_null_when_modify_seats_and_price_given_orderId_and_seating() {
-        //given
-//        Order order = new Order();
-//        Schedule schedule = new Schedule();
-//        order.setScheduleId(schedule.getId());
-//        order.setSeats("000000100000000000000000000000000001");
-//        schedule.setPrice((double) 50);
-//        Seating seating = new Seating();
-//        seating.setSeats("000000100000000000000000000000000001");
-//        Seating seatingOrder = new Seating();
-//        seatingOrder.setSeats("000000100000000000000000000000000001");
-//        doReturn(Optional.of(order)).when(orderRepository).findById(order.getId());
-//        doReturn(schedule).when(scheduleService).findById(schedule.getId());
-//        doReturn(seatingOrder).when(seatingService).findSeatingById(seatingOrder.getId());
-//
-//        //when
-//        orderService.modifySeatsAndPrice(order.getId(), seating);
-//
-//        //then
-//        verify(orderRepository, times(1)).save(order);
-//        verify(seatingRepository, times(1)).save(seatingOrder);
     }
 }

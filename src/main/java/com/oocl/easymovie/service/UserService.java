@@ -1,12 +1,18 @@
 package com.oocl.easymovie.service;
 
+import cn.hutool.crypto.digest.DigestUtil;
+import com.oocl.easymovie.dto.VIP;
+import com.oocl.easymovie.entity.PurchasePoint;
 import com.oocl.easymovie.entity.User;
+import com.oocl.easymovie.exception.UserAlreadyExistsException;
+import com.oocl.easymovie.exception.UserAuthenticationFailedException;
 import com.oocl.easymovie.exception.UserNotFoundException;
+import com.oocl.easymovie.repository.PurchasePointRepository;
 import com.oocl.easymovie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Date;
 
 /**
  * @author edward
@@ -16,6 +22,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PurchasePointRepository purchasePointRepository;
 
     public User save(User user) {
         if (user == null) {
@@ -29,6 +36,33 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    public long login(User user) {
+        User data = userRepository.findOneByUsername(user.getUsername());
+        if (data != null && DigestUtil.bcryptCheck(user.getPassword(), data.getPassword())) {
+            return data.getId();
+        }
+        throw new UserAuthenticationFailedException();
+    }
+
+
+    public String registerUser(User user) {
+        User data = userRepository.findOneByUsername(user.getUsername());
+        if(data!=null){
+            throw new UserAlreadyExistsException();
+        }
+        user.setPassword(DigestUtil.bcrypt(user.getPassword()));
+        user.setGender("secrecy");
+        user.setBirthday(new Date());
+        this.save(user);
+        User newUser = userRepository.findOneByUsername(user.getUsername());
+        PurchasePoint purchasePoint = new PurchasePoint();
+        purchasePoint.setUserId(newUser.getId());
+        purchasePoint.setBalance(0.0);
+        purchasePoint.setHistoryTotal(0.0);
+        purchasePointRepository.save(purchasePoint);
+        return "register successfully!";
+    }
+
     public User update(Long id, User userRequest) {
         User user = findById(id);
         if (userRequest.getBirthday() != null) {
@@ -40,5 +74,25 @@ public class UserService {
         userRequest.setId(id);
 
         return userRepository.save(user);
+    }
+
+    public VIP findVIPLevelAndDiscountById(Long id) {
+        VIP vip = new VIP();
+        PurchasePoint purchasePoint = purchasePointRepository.findByUserId(id);
+        Double historyTotal = purchasePoint.getHistoryTotal();
+        if(historyTotal==null||(historyTotal>=0&&historyTotal<200)){
+            vip.setLevel(0);
+            vip.setDiscount(1);
+        }else if(historyTotal<500){
+            vip.setLevel(1);
+            vip.setDiscount(0.95);
+        }else if(historyTotal<800){
+            vip.setLevel(2);
+            vip.setDiscount(0.9);
+        }else{
+            vip.setLevel(3);
+            vip.setDiscount(0.85);
+        }
+        return vip;
     }
 }

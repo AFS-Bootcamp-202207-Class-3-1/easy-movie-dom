@@ -17,7 +17,8 @@ public class PurchasePointService {
     }
 
 
-    public Integer findBalanceByUserId(Long id) {
+
+    public Double findBalanceByUserId(Long id) {
         PurchasePoint purchasePoint = purchasePointRepository.findByUserId(id);
         if (purchasePoint == null) {
             throw new UserNotFoundException();
@@ -25,13 +26,13 @@ public class PurchasePointService {
         return purchasePoint.getBalance();
     }
 
-    public Integer rechargeByUserId(Long id, String code) {
+    public Double rechargeByUserId(Long id, String code) {
         PurchasePoint purchasePoint = purchasePointRepository.findByUserId(id);
         if (purchasePoint == null) {
             throw new UserNotFoundException();
         }
-        Integer balance = purchasePoint.getBalance();
-        Integer historyTotal = purchasePoint.getHistoryTotal();
+        Double balance = purchasePoint.getBalance();
+        Double historyTotal = purchasePoint.getHistoryTotal();
         int recharge = ParseCode.parseCode(code);
         purchasePoint.setBalance(balance + recharge);
         purchasePoint.setHistoryTotal(historyTotal + recharge);
@@ -39,7 +40,7 @@ public class PurchasePointService {
         return balance + recharge;
     }
 
-    public void deductBalance(Long userId,Integer price){
+    public void deductBalance(Long userId,Double price){
         PurchasePoint purchasePoint = purchasePointRepository.findByUserId(userId);
         if(purchasePoint.getBalance() < price){
             throw new BalanceNotEnough();
@@ -48,4 +49,5 @@ public class PurchasePointService {
             purchasePointRepository.save(purchasePoint);
         }
     }
+
 }
