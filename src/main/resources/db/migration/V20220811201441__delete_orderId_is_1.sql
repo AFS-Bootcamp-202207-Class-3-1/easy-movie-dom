@@ -1,0 +1,1 @@
+delete from `order` where id=1;
