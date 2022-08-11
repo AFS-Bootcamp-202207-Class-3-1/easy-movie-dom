@@ -15,7 +15,9 @@ public class GlobalControllerAdvice {
             OrderNotFoundException.class,
             ScheduleNotFoundException.class,
             CodeIllegalException.class,
-            BalanceNotEnough.class})
+            BalanceNotEnough.class,
+            UserAuthenticationFailedException.class,
+            UserAlreadyExistsException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(Exception exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage());

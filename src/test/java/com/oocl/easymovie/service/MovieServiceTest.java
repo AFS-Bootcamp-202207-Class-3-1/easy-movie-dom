@@ -1,6 +1,5 @@
 package com.oocl.easymovie.service;
 
-import com.oocl.easymovie.entity.DirectorMovieRelation;
 import com.oocl.easymovie.entity.Figure;
 import com.oocl.easymovie.entity.Movie;
 import com.oocl.easymovie.entity.Theater;
