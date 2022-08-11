@@ -63,22 +63,6 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Order updateOrder(Long id, Order newOrder) {
-        Order oldOrder = orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
-        if (!Objects.isNull(newOrder.getScheduleId())) {
-            oldOrder.setScheduleId(newOrder.getScheduleId());
-        }
-        if (!Objects.isNull(newOrder.getSnacksId())) {
-            oldOrder.setSnacksId(newOrder.getSnacksId());
-        }
-        if (!Objects.isNull(newOrder.getExpirationTime())) {
-            oldOrder.setExpirationTime(newOrder.getExpirationTime());
-        }
-        oldOrder.setSnacksTotalPrice(newOrder.getSnacksTotalPrice());
-        oldOrder.setTotalPrice(newOrder.getTotalPrice());
-        return orderRepository.save(oldOrder);
-    }
-
     public List<Order> findAllOrderByUserId(Long userId) {
         return orderRepository.findAllOrderByUserId(userId);
     }
@@ -115,6 +99,8 @@ public class OrderService {
         Order order = findOrderById(orderId);
         purchasePointService.deductBalance(order.getUserId(), (int) order.getTotalPrice());
         order.setIsPaid(true);
+        order.setIsRefund(false);
+        order.setIsTicketUsed(false);
         String key = String.valueOf(System.currentTimeMillis());
         order.setQuickMarkKey(key);
         orderRepository.save(order);
@@ -181,7 +167,9 @@ public class OrderService {
         seatingRepository.save(seating);
 
         //更新订单状态
+        order.setIsPaid(false);
         order.setIsRefund(true);
+        order.setIsTicketUsed(false);
         order.setSeats("000000000000000000000000000000000000");
         orderRepository.save(order);
 

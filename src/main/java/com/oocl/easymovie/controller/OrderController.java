@@ -45,10 +45,6 @@ public class OrderController {
         return ResultData.success(orderMapper.toResponse(orderService.createOrder(orderMapper.toEntity(orderRequest))));
     }
 
-    @PutMapping("/{orderId}")
-    public ResultData<OrderResponse> updateOrder(@PathVariable Long orderId,@RequestBody OrderRequest orderRequest){
-        return ResultData.success(orderMapper.toResponse(orderService.updateOrder(orderId,orderMapper.toEntity(orderRequest))));
-    }
 
     @GetMapping("/all/{userId}")
     public ResultData<List<OrderContainMovieTheaterScheduleResponse>> findAllOrderByUserId(@PathVariable Long userId){
