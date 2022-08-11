@@ -97,7 +97,7 @@ public class OrderService {
 
     public void payForOrder(Long orderId) {
         Order order = findOrderById(orderId);
-        purchasePointService.deductBalance(order.getUserId(), (int) order.getTotalPrice());
+        purchasePointService.deductBalance(order.getUserId(), order.getTotalPrice());
         order.setIsPaid(true);
         order.setIsRefund(false);
         order.setIsTicketUsed(false);
@@ -157,7 +157,7 @@ public class OrderService {
         Schedule schedule = scheduleRepository.findById(order.getScheduleId()).orElseThrow(ScheduleNotFoundException::new);
         Seating seating = seatingRepository.findById(schedule.getSeatingId()).orElseThrow(SeatingNotFoundException::new);
         //退款，更新用户余额
-        refundBalance(userId, (int) order.getTotalPrice());
+        refundBalance(userId, order.getTotalPrice());
         //解锁Schedule中Seating的seats
         String unlockSeating = unlockSeating(seating.getSeats(), order.getSeats());
         seating.setSeats(unlockSeating);
@@ -172,7 +172,7 @@ public class OrderService {
 
     }
 
-    private void refundBalance(Long userId, Integer price) {
+    private void refundBalance(Long userId, Double price) {
         PurchasePoint purchasePoint = purchasePointRepository.findByUserId(userId);
         if (Objects.isNull(purchasePoint)) throw new BalanceNotEnough();
         if (Objects.nonNull(price) && price > 0) {

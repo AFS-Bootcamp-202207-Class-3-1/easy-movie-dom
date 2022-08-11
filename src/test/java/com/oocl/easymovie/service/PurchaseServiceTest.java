@@ -31,7 +31,7 @@ public class PurchaseServiceTest {
         doReturn(purchasePoint).when(purchasePointRepository).findByUserId(user.getId());
 
         //when
-        Integer balance = purchasePointService.findBalanceByUserId(user.getId());
+        Double balance = purchasePointService.findBalanceByUserId(user.getId());
 
         //then
         assertEquals(purchasePoint.getBalance(), balance);
@@ -43,13 +43,13 @@ public class PurchaseServiceTest {
         //given
         User user = new User();
         PurchasePoint purchasePoint = new PurchasePoint();
-        purchasePoint.setBalance(100);
-        purchasePoint.setHistoryTotal(100);
+        purchasePoint.setBalance(100.0);
+        purchasePoint.setHistoryTotal(100.0);
         doReturn(purchasePoint).when(purchasePointRepository).findByUserId(user.getId());
         doReturn(purchasePoint).when(purchasePointRepository).save(purchasePoint);
 
         //when
-        Integer newCharge = purchasePointService.rechargeByUserId(user.getId(), "coffee-1-studio");
+        Double newCharge = purchasePointService.rechargeByUserId(user.getId(), "coffee-1-studio");
 
         //then
         assertEquals(101, newCharge);
@@ -60,11 +60,11 @@ public class PurchaseServiceTest {
         //given
         User user = new User();
         PurchasePoint purchasePoint = new PurchasePoint();
-        purchasePoint.setBalance(500);
+        purchasePoint.setBalance(500.0);
         doReturn(purchasePoint).when(purchasePointRepository).findByUserId(user.getId());
 
         //when
-        purchasePointService.deductBalance(user.getId(), 50);
+        purchasePointService.deductBalance(user.getId(), 50.0);
 
         //then
         verify(purchasePointRepository, times(1)).save(purchasePoint);
@@ -75,13 +75,13 @@ public class PurchaseServiceTest {
         //given
         User user = new User();
         PurchasePoint purchasePoint = new PurchasePoint();
-        purchasePoint.setBalance(50);
+        purchasePoint.setBalance(50.0);
         doReturn(purchasePoint).when(purchasePointRepository).findByUserId(user.getId());
 
         //when
         Exception threwException = null;
         try{
-            purchasePointService.deductBalance(user.getId(), 500);
+            purchasePointService.deductBalance(user.getId(), 500.0);
         }catch(Exception exception){
             threwException = exception;
         }
