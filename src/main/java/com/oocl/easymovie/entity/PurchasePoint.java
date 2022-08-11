@@ -25,8 +25,8 @@ public class PurchasePoint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
-    private Double balance;
-    private Double historyTotal;
+    private Integer balance;
+    private Integer historyTotal;
 
     @CreationTimestamp
     private Date createTime;
