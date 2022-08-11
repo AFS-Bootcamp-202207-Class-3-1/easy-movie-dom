@@ -2,7 +2,6 @@ package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
-import com.oocl.easymovie.entity.Seating;
 import com.oocl.easymovie.repository.OrderRepository;
 import com.oocl.easymovie.repository.SeatingRepository;
 import org.junit.jupiter.api.Test;
@@ -67,23 +66,6 @@ public class OrderServiceTest {
 
         //then
         assertEquals(order, createdOrder);
-    }
-
-    @Test
-    void should_return_order_when_update_order_given_id_and_a_update_request() {
-        //given
-        Order order = new Order();
-        order.setSnacksId((long) 1);
-        Order orderRequest = new Order();
-        orderRequest.setSnacksId((long) 2);
-        doReturn(Optional.of(order)).when(orderRepository).findById(order.getId());
-        doReturn(order).when(orderRepository).save(order);
-
-        //when
-        Order newOrder = orderService.updateOrder(order.getId(), orderRequest);
-
-        //then
-        assertEquals(2, newOrder.getSnacksId());
     }
 
 //    @Test
