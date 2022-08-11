@@ -1,12 +1,10 @@
 package com.oocl.easymovie.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.oocl.easymovie.dto.ResultData;
 import com.oocl.easymovie.dto.UserRequest;
 import com.oocl.easymovie.dto.UserResponse;
 import com.oocl.easymovie.entity.VIP;
-import com.oocl.easymovie.entity.User;
 import com.oocl.easymovie.mapper.UserMapper;
 import com.oocl.easymovie.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -52,8 +50,8 @@ public class UserController {
     }
 
     @PostMapping("/user/register")
-    public void createUser(@RequestBody UserRequest userRequest) {
-        userService.saveUser(userMapper.toEntity(userRequest));
+    public ResultData<String> createUser(@RequestBody UserRequest userRequest) {
+        return ResultData.success(userService.saveUser(userMapper.toEntity(userRequest)));
     }
 
 }

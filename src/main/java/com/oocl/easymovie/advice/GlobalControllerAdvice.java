@@ -23,4 +23,23 @@ public class GlobalControllerAdvice {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse CodeIllegalException(Exception exception) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse BalanceNotEnough(Exception exception) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse UserAuthenticationFailedException(Exception exception) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse UserAlreadyExistsException(Exception exception) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
+    }
+
 }
