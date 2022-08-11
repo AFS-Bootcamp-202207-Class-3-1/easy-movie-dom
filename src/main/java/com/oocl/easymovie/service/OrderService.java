@@ -99,13 +99,13 @@ public class OrderService {
         return orderRepository.findRefundOrderByUserId(UserId, IS_REFUND);
     }
 
-    public List<OrderContainMovieTheaterScheduleResponse> getOrderLinkedDataListByTypes(List<Order> orderList){
+    public List<OrderContainMovieTheaterScheduleResponse> getOrderLinkedDataListByTypes(List<Order> orderList) {
         List<OrderContainMovieTheaterScheduleResponse> orderContainMovieTheaterScheduleResponseArrayList = new ArrayList<>();
         orderList.forEach(order -> orderContainMovieTheaterScheduleResponseArrayList.add(
                 orderMapper.toOrderContainMovieTheaterSchedule(
                         order
-                        ,movieService.findById(order.getMovieId())
-                        ,theaterService.findTheaterById(order.getTheaterId())
+                        , movieService.findById(order.getMovieId())
+                        , theaterService.findTheaterById(order.getTheaterId())
                         , scheduleService.findById(order.getScheduleId())
                 )));
         return orderContainMovieTheaterScheduleResponseArrayList;
@@ -124,16 +124,15 @@ public class OrderService {
         //这就要求插入数据的时候要插入每个场次的座位内容
         Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
         Schedule schedule = scheduleService.findById(order.getScheduleId());
-        Seating readySeating = seatingService.findSeatingById(schedule.getSeatingId());
+        Seating seatingWithSchedule = seatingService.findSeatingById(schedule.getSeatingId());
         //更新订单的总额
         int count = statisticsSeatedNumber(seating.getSeats());//统计买了几个座位
         double totalPrice = schedule.getPrice() * count;
         order.setTotalPrice(totalPrice);
-//        更新总座位的座位信息
-        String seatingWithOrder = order.getSeats();
-        String seatedStatus = mergeSeatStatus(seatingWithOrder, seating.getSeats());
-        readySeating.setSeats(seatedStatus);
-        seatingRepository.save(readySeating);
+//        更新schedule的seating信息
+        String seatedStatus = mergeSeatStatus(seatingWithSchedule.getSeats(), seating.getSeats());
+        seatingWithSchedule.setSeats(seatedStatus);
+        seatingRepository.save(seatingWithSchedule);
         //更新订单上的座位信息
         order.setSeats(seating.getSeats());
         orderRepository.save(order);
@@ -141,13 +140,11 @@ public class OrderService {
     }
 
     private int statisticsSeatedNumber(String seated) {
-        int count1 = 0;
+        int count = 0;
         for (int i = 0; i < seated.length(); i++) {
-            if (seated.charAt(i) != '1' || seated.charAt(i) != '0') {
-                if (seated.charAt(i) == '1') count1++;
-            }
+            if (seated.charAt(i) == '1') count++;
         }
-        return count1;
+        return count;
     }
 
     private String mergeSeatStatus(String seatWithOrder, String toSeated) {
