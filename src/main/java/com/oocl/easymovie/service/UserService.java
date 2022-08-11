@@ -69,7 +69,7 @@ public class UserService {
     public VIP findVIPLevelAndDiscountById(Long id) {
         VIP vip = new VIP();
         PurchasePoint purchasePoint = purchasePointRepository.findByUserId(id);
-        Integer historyTotal = purchasePoint.getHistoryTotal();
+        Double historyTotal = purchasePoint.getHistoryTotal();
         if(historyTotal==null||(historyTotal>=0&&historyTotal<200)){
             vip.setLevel(0);
             vip.setDiscount(1);
