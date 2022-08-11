@@ -175,4 +175,17 @@ public class OrderControllerTest {
         //then
 
     }
+
+    @Test
+    void should_when_given_() throws Exception {
+        //given
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/orders/ticket-redemption")
+                .param("key","1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        //then
+
+    }
 }
