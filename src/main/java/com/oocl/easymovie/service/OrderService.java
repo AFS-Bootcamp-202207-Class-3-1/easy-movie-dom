@@ -1,6 +1,7 @@
 package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
+import com.oocl.easymovie.dto.VIP;
 import com.oocl.easymovie.entity.*;
 import com.oocl.easymovie.exception.BalanceNotEnough;
 import com.oocl.easymovie.exception.OrderNotFoundException;
