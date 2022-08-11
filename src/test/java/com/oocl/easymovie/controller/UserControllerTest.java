@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import javax.transaction.Transactional;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -74,42 +76,43 @@ public class UserControllerTest {
 
     }
 
-//    @Test
-//    void should_return_user_response_when_login_given_user_request() throws Exception {
-//        //given
-//        User user = userRepository.getReferenceById((long) 1);
-//        String loginRequest = String.format("{\n" +
-//                "    \"username\": \"%s\",\n" +
-//                "    \"password\": \"%s\" \n" +
-//                "}", user.getUsername(), user.getPassword());
-//
-//        //when
-//        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/user/login")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(loginRequest))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.data.username").value(user.getUsername()));
-//
-//        //then
-//
-//    }
+    @Transactional
+    @Test
+    void should_return_user_response_when_login_given_user_request() throws Exception {
+        //given
+        User user = userRepository.getReferenceById((long) 1);
+        String loginRequest = String.format("{\n" +
+                "    \"username\": \"%s\",\n" +
+                "    \"password\": \"%s\" \n" +
+                "}", user.getUsername(), "1234");
 
-//    @Test
-//    void should_return_null_when_create_user_given_user_request() throws Exception {
-//        //given
-//        String createRequest = "{\n" +
-//                "    \"username\": \"Melanie\",\n" +
-//                "    \"password\": \"ThisIsMelanie\" \n" +
-//                "    \"phoneNumber\": \"11223344556\" \n" +
-//                "}";
-//
-//        //when
-//        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/user/register")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(createRequest))
-//                .andExpect(MockMvcResultMatchers.status().isOk());
-//
-//        //then
-//
-//    }
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginRequest))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value(user.getUsername()));
+
+        //then
+
+    }
+
+    @Test
+    void should_return_null_when_create_user_given_user_request() throws Exception {
+        //given
+        String createRequest = "{\n" +
+                "    \"username\": \"Melanie\",\n" +
+                "    \"password\": \"ThisIsMelanie\",\n" +
+                "    \"phoneNumber\": \"11223344556\" \n" +
+                "}";
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/user/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createRequest))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        //then
+
+    }
 }
