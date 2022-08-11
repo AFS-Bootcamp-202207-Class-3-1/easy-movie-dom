@@ -36,4 +36,22 @@ public class SeatingServiceTest {
         assertEquals(seating, seatingReturn);
 
     }
+
+    @Test
+    void should_throw_exception_when_find_seat_by_id_given_wrong_id() {
+        //given
+        Seating seating = new Seating();
+
+        //when
+        Exception expectedException = null;
+        try{
+            Seating seatingReturn = seatingService.findSeatingById(seating.getId());
+        }catch(Exception e){
+            expectedException = e;
+        }
+
+        //then
+        assertEquals(expectedException.getMessage(), "Seating Not found");
+
+    }
 }
