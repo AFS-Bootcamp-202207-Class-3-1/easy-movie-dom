@@ -1,5 +1,6 @@
 package com.oocl.easymovie.controller;
 
+import com.oocl.easymovie.entity.Schedule;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,13 +23,27 @@ public class ScheduleControllerTest {
 
         //when
         mockMvc.perform(MockMvcRequestBuilders.get("/api/schedule")
-                .param("theaterId","1")
-                .param("movieId","1"))
+                .param("theaterId", "1")
+                .param("movieId", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].theaterId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].movieId").value(1));
 
         //then
+
+    }
+
+    @Test
+    void should_return_seating_when_given_() throws Exception {
+        //given
+        Schedule schedule = new Schedule();
+        schedule.setId(99999L);
+
+        //when
+
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/schedule/{scheduleId}/seats",999))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("schedule no found"));
 
     }
 }

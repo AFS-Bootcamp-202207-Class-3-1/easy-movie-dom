@@ -17,7 +17,8 @@ public class GlobalControllerAdvice {
             CodeIllegalException.class,
             BalanceNotEnough.class,
             UserAuthenticationFailedException.class,
-            UserAlreadyExistsException.class})
+            UserAlreadyExistsException.class,
+            SeatingNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(Exception exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage());
@@ -37,6 +38,7 @@ public class GlobalControllerAdvice {
     public ErrorResponse UserAuthenticationFailedException(Exception exception) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse UserAlreadyExistsException(Exception exception) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
