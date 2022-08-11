@@ -48,4 +48,5 @@ public class PurchasePointService {
             purchasePointRepository.save(purchasePoint);
         }
     }
+
 }

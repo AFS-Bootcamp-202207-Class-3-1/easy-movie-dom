@@ -11,6 +11,7 @@ import com.oocl.easymovie.service.ScheduleService;
 import com.oocl.easymovie.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -81,10 +82,15 @@ public class OrderController {
 
 
     @PostMapping("/{orderId}/seats")
-    public ResultData<Object> modifySeatsAndPrice(@PathVariable(value = "orderId") Long orderId, @RequestBody SeatingRequest seatingRequest){
-        Seating seating= seatingMapper.toEntity(seatingRequest);
-        orderService.modifySeatsAndPrice(orderId,seating);
+    public ResultData<Object> modifySeatsAndPrice(@PathVariable(value = "orderId") Long orderId, @RequestBody SeatingRequest seatingRequest) {
+        Seating seating = seatingMapper.toEntity(seatingRequest);
+        orderService.modifySeatsAndPrice(orderId, seating);
+        return ResultData.success();
+    }
 
+    @PostMapping("/refund/{orderId}")
+    public ResultData<Object> refundForOrders(@PathVariable Long orderId) {
+        orderService.refundOrdersById(orderId);
         return ResultData.success();
     }
 }

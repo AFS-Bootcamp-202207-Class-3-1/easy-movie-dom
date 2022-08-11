@@ -2,11 +2,17 @@ package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.dto.OrderContainMovieTheaterScheduleResponse;
 import com.oocl.easymovie.entity.Order;
+import com.oocl.easymovie.entity.PurchasePoint;
 import com.oocl.easymovie.entity.Schedule;
 import com.oocl.easymovie.entity.Seating;
+import com.oocl.easymovie.exception.BalanceNotEnough;
 import com.oocl.easymovie.exception.OrderNotFoundException;
+import com.oocl.easymovie.exception.ScheduleNotFoundException;
+import com.oocl.easymovie.exception.SeatingNotFoundException;
 import com.oocl.easymovie.mapper.OrderMapper;
 import com.oocl.easymovie.repository.OrderRepository;
+import com.oocl.easymovie.repository.PurchasePointRepository;
+import com.oocl.easymovie.repository.ScheduleRepository;
 import com.oocl.easymovie.repository.SeatingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +35,14 @@ public class OrderService {
     private final TheaterService theaterService;
     private final PurchasePointService purchasePointService;
 
+    private final PurchasePointRepository purchasePointRepository;
+
     @Autowired
     private SeatingService seatingService;
     @Autowired
     private SeatingRepository seatingRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
     @Autowired
     OrderMapper orderMapper;
 
@@ -42,11 +52,14 @@ public class OrderService {
     }
 
     public Order createOrder(Order order) {
+
+        //TODO 这里创建订单的时候就他设置总额有问题，如果加入选座环节的话
         order.setTotalPrice(scheduleService.findById(order.getScheduleId()).getPrice());
         order.setIsPaid(false);
         order.setIsRebook(false);
         order.setIsRefund(false);
         order.setIsTicketUsed(false);
+        order.setSeats("000000000000000000000000000000000000");//设置当前订单订购座位情况
         return orderRepository.save(order);
     }
 
@@ -155,4 +168,43 @@ public class OrderService {
     }
 
 
+    public void refundOrdersById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        Long userId = order.getUserId();
+        Schedule schedule = scheduleRepository.findById(order.getScheduleId()).orElseThrow(ScheduleNotFoundException::new);
+        Seating seating = seatingRepository.findById(schedule.getSeatingId()).orElseThrow(SeatingNotFoundException::new);
+        //退款，更新用户余额
+        refundBalance(userId, (int) order.getTotalPrice());
+        //解锁Schedule中Seating的seats
+        String unlockSeating = unlockSeating(seating.getSeats(), order.getSeats());
+        seating.setSeats(unlockSeating);
+        seatingRepository.save(seating);
+
+        //更新订单状态
+        order.setIsRefund(true);
+        order.setSeats("000000000000000000000000000000000000");
+        orderRepository.save(order);
+
+    }
+
+    private void refundBalance(Long userId, Integer price) {
+        PurchasePoint purchasePoint = purchasePointRepository.findByUserId(userId);
+        if (Objects.isNull(purchasePoint)) throw new BalanceNotEnough();
+        if (Objects.nonNull(price) && price > 0) {
+            purchasePoint.setBalance(purchasePoint.getBalance() - price);
+        }
+        purchasePointRepository.save(purchasePoint);
+    }
+
+    private String unlockSeating(String seatingWithSchedule, String seatingOrder) {
+        String res = "";
+        for (int i = 0; i < seatingOrder.length(); i++) {
+            if (seatingOrder.charAt(i) == '1') {
+                res += '0';
+                continue;
+            }
+            res += seatingWithSchedule.charAt(i);
+        }
+        return res;
+    }
 }
