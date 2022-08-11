@@ -2,6 +2,9 @@ package com.oocl.easymovie.service;
 
 import com.oocl.easymovie.entity.Order;
 import com.oocl.easymovie.entity.Schedule;
+import com.oocl.easymovie.entity.User;
+import com.oocl.easymovie.exception.OrderNotFoundException;
+import com.oocl.easymovie.exception.UserNotFoundException;
 import com.oocl.easymovie.repository.OrderRepository;
 import com.oocl.easymovie.repository.SeatingRepository;
 import org.junit.jupiter.api.Test;
@@ -12,9 +15,12 @@ import org.mockito.Spy;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -53,6 +59,17 @@ public class OrderServiceTest {
     }
 
     @Test
+    void should_throw_exception_when_get_order_by_id_given_wrong_orderId() {
+        //given
+
+        //when
+        OrderNotFoundException exception = assertThrows(OrderNotFoundException.class, () -> orderService.findOrderById(999L));
+
+        //then
+        assertEquals("order not found", exception.getMessage());
+    }
+
+    @Test
     void should_return_order_when_create_order_given_order() {
         //given
         Schedule schedule = new Schedule();
@@ -87,6 +104,79 @@ public class OrderServiceTest {
 //        assertEquals(orderPage, orderInPage);
 //
 //    }
+
+    @Test
+    void should_return_order_list_when_get_order_given_userId() {
+        //given
+        Order order1 = new Order();
+        Order order2 = new Order();
+        User user = new User();
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order1);
+        orderList.add(order2);
+        doReturn(orderList).when(orderRepository).findAllOrderByUserId(user.getId());
+
+        //when
+        List<Order> gotOrder = orderService.findAllOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrder);
+
+    }
+
+    @Test
+    void should_get_used_order_when_get_used_order_given_userId() {
+        //given
+        User user = new User();
+        Order order = new Order();
+        order.setIsTicketUsed(true);
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order);
+        doReturn(orderList).when(orderRepository).findUsedOrderByUserId(user.getId(), true);
+
+        //when
+        List<Order> gotOrders = orderService.findUsedOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrders);
+
+    }
+
+    @Test
+    void should_return_rebooked_order_list_when_get_rebook_order_given_userId() {
+        //given
+        User user = new User();
+        Order order = new Order();
+        order.setIsRebook(true);
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order);
+        doReturn(orderList).when(orderRepository).findRebookOrderByUserId(user.getId(), true);
+
+        //when
+        List<Order> gotOrders = orderService.findRebookOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrders);
+
+    }
+
+    @Test
+    void should_return_paid_order_when_get_paid_order_given_userId() {
+        //given
+        User user = new User();
+        Order order = new Order();
+        order.setIsPaid(true);
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order);
+        doReturn(orderList).when(orderRepository).findPaidOrderByUserId(user.getId(), true);
+
+        //when
+        List<Order> gotOrders = orderService.findPaidOrderByUserId(user.getId());
+
+        //then
+        assertEquals(orderList, gotOrders);
+
+    }
 
     @Test
     void should_return_null_when_pay_for_order_given_orderId() {
