@@ -52,11 +52,11 @@ class MovieControllerTest {
 
         //when
         mockMvc.perform(MockMvcRequestBuilders.get("/api/movies")
-                .param("keyword","狼")
-                .param("page","1")
-                .param("pageSize","5"))
+                .param("keyword", "狼")
+                .param("page", "1")
+                .param("pageSize", "5"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data.content",hasSize(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.content", hasSize(5)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.content[0].name").value("战狼2"));
         //then
     }
@@ -67,12 +67,23 @@ class MovieControllerTest {
         Movie movie = movieRepository.getReferenceById((long) 1);
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/movies/{movieId}",movie.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/movies/{movieId}", movie.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.movie.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.movie.name").value("战狼2"));
         //then
     }
 
+    @Test
+    void should_return_movie_list_when_find_top_10_movies_given_nothing() throws Exception {
+        //given
 
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/movies/top"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data",hasSize(10)));
+
+        //then
+
+    }
 }
