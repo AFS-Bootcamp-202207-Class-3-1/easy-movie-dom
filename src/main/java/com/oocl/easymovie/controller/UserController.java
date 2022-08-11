@@ -21,11 +21,6 @@ public class UserController {
     private final UserMapper userMapper;
     private final UserService userService;
 
-//    @PostMapping
-//    public UserResponse create(@RequestBody UserRequest request) {
-//        return userMapper.toResponse(userService.save(userMapper.toEntity(request)));
-//    }
-
     @PutMapping("/{id}")
     public UserResponse update(@RequestBody UserRequest userRequest, @PathVariable Long id) {
         return userMapper.toResponse(userService.update(id, userMapper.toEntity(userRequest)));
