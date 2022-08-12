@@ -12,6 +12,7 @@ import com.oocl.easymovie.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -91,8 +92,10 @@ public class OrderController {
     }
 
     @GetMapping(value = "/ticket-redemption", params = "key")
-    public ResultData<Object> redemptionTicket(@RequestParam(value = "key") String key) {
+    public ResultData<Object> redemptionTicket(@RequestParam(value = "key") String key) throws IOException {
         orderService.redemptionTicket(key);
+//        String message = "ticketUsed";
+//        WebSocketServer.sendInfo(message, key);//推送给前端
         return ResultData.success();
     }
 

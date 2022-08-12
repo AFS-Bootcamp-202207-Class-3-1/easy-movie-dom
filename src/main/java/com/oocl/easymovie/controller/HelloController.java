@@ -14,9 +14,21 @@ public class HelloController {
     public String ping() {
         return "pong";
     }
+
     @PostMapping("/dev")
-    public String devBranch(){
+    public String devBranch() {
         return "devBranch";
     }
+
+//    @GetMapping("/socket/push/{cid}")
+//    public ResultData<Object> testWebSocket(@PathVariable(value = "cid") String cid) {
+//        String message = "ticketUsed";
+//        try {
+//            WebSocketServer.sendInfo(message, cid);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return ResultData.success();
+//    }
 
 }

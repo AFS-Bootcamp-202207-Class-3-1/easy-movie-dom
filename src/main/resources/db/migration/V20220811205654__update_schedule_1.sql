@@ -1,0 +1,15 @@
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-12 17:00:00', movie_id = 1, seating_id = 1, price = 55,  start_time = '2022-08-12 15:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 1;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-12 20:00:00', movie_id = 2, seating_id = 2, price = 100, start_time = '2022-08-12 18:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 2;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-12 23:00:00', movie_id = 1, seating_id = 3, price = 50,  start_time = '2022-08-12 21:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 3;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-13 17:00:00', movie_id = 1, seating_id = 4, price = 51,  start_time = '2022-08-13 15:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 4;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-13 20:00:00', movie_id = 1, seating_id = 5, price = 52,  start_time = '2022-08-13 18:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 5;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-14 17:00:00', movie_id = 1, seating_id = 6, price = 53,  start_time = '2022-08-14 15:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 6;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-14 20:00:00', movie_id = 1, seating_id = 7, price = 54,  start_time = '2022-08-14 18:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 7;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-15 17:00:00', movie_id = 1, seating_id = 8, price = 59,  start_time = '2022-08-15 15:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 8;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-15 20:00:00', movie_id = 1, seating_id = 9, price = 65,  start_time = '2022-08-15 18:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 9;
+UPDATE schedule SET create_time = '2022-08-08 20:47:56', end_time = '2022-08-16 17:00:00', movie_id = 1, seating_id = 10, price = 63, start_time = '2022-08-16 15:00:00', theater_id = 1, update_time = '2022-08-08 20:48:12', screen_text = '英语 2D 贵宾厅2' WHERE id = 10;
+
+
+INSERT INTO `order` (id, user_id, movie_id, theater_id, schedule_id, is_ticket_used, votes, quick_mark_key, snacks_total_price, snacks_id, total_price, is_paid, is_rebook, is_refund, seats, expiration_time, create_time, update_time)
+VALUES (1, 1, 1, 1, 1, 0, 1, '1660223605078', 1, 1, 1, 1, 0, 0, '000000000000000000000000000000001000', '2022-08-10 10:21:49', '2022-08-10 10:21:51', '2022-08-10 10:21:55');
+
